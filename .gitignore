@@ -1,0 +1,46 @@
+# Secrets
+*.pem
+*.key
+*.crt
+*.secret
+.env
+.env.*
+
+# SSH keys
+.ssh/
+
+# Ansible
+*.retry
+vault-password.txt
+.vault_pass
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+
+# Editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
