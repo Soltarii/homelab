@@ -266,7 +266,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="2VjGUj5yRtxDkvQ_Yygy-211" parent="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=mxgraph.basic.plaque;dx=2.09;whiteSpace=wrap;dashed=0;sketch=0;pointerEvents=1;strokeColor=#ffffff;strokeWidth=2;align=center;fontFamily=Helvetica;fontSize=12;fontColor=#EEEEEE;fillColor=light-dark(#FFFFFF,#FF0000);labelPosition=center;fontStyle=1" value="External-LAN" vertex="1">
-          <mxGeometry height="20" width="100" x="497" y="320" as="geometry" />
+          <mxGeometry height="20" width="100" x="520" y="320" as="geometry" />
         </mxCell>
         <mxCell id="2VjGUj5yRtxDkvQ_Yygy-212" parent="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=mxgraph.basic.plaque;dx=2.09;whiteSpace=wrap;dashed=0;sketch=0;pointerEvents=1;strokeColor=#ffffff;strokeWidth=2;align=center;fontFamily=Helvetica;fontSize=12;fontColor=#EEEEEE;fillColor=light-dark(#FFFFFF,#0000FF);labelPosition=center;fontStyle=1" value="Internal-LAN" vertex="1">
           <mxGeometry height="20" width="100" x="523" y="1040" as="geometry" />
