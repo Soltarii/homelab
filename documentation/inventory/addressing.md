@@ -1,22 +1,10 @@
 # Network Addressing Plan
 
-The following documentation is intended to become an authoritative source for IP addresses, VLAN assignments, gateways, DNS, and reserved ranges.
+The following documentation is intended to be an authoritative source for VMID assignments, VLAN assignments, IP address assignments, gateways, DNS, and reserved ranges.
 
 ## Addressing Design
 
-My homelab internal addressing scheme is designed to provide a holistic, predictable relationship between VMID allocation, VLAN assignment, and IPv4 assignment on a basis of granular functionality. 
-
-VMIDs are the broadest categorized functional domains, grouped in hundred-wide ranges intended to only range from 100 to 999.
-
-VLANs are more granular categorizations within their parent VMID domain directly matching the leading two digits of their relevant VMID (i.e VLAN 13 = VMIDs 130 - 139).
-There are 2 exceptions to this: 1) If the interface is an internal default gateway; 2) If the interface resides in the external Home LAN.
-1) All internal default gateways are subinterfaces on OPNsense, relating to their subnet instead of the parent VMID.
-2) All external Home LAN interfaces use the arbitrary Native VLAN = 99.
-
-IPv4 addresses reflect the most granular scopes of node functionality. Internal addresses define their 3rd octet mirroring their respective VLAN; their 4th octet categorizes functionally/identity-equivalent hosts within the same 10-wide ranges (i.e. AP1 = 10.10.10.80 and AP2 = 10.10.10.81), intended to only range from 10-99.
-There are 3 exceptions to this: 1) If the interface is a default gateway; 2) If the interface resides in the external home LAN.
-1) All default gateways use .254 as the 4th octet. 
-2) External home LAN interfaces follow reverse sequential numbering from the default gateway assignment, and matching 4th octet assignment when possible to congruent hosts within the internal homelab network (i.e. vmbr0 = 192.168.254.253 and vmbr1 = 10.10.10.253).
+A full explanation of my addressing design can be found in /documentation/architecture/network.md. In summary, my homelab internal addressing scheme is designed to provide a holistic, predictable relationship between VMID allocation, VLAN assignment, and IPv4 assignment on a basis of granular functionality. 
 
 ## Address Space
 
@@ -24,34 +12,34 @@ My holistic environment encompasses 2 primary network domains: My "internal" pri
 All VLANs and subnets use a 1:1 mapping. All subnets use their default gateway as their primary DNS, with 1.1.1.1 (Cloudflare) and 8.8.8.8 (Google) as backup DNS.
 Currently, all address assignments are statically assigned. Dynamic address assignments are expected to used with simulated hosts in the Labs subnet later.
 
-### Internal Homelab LAN
+### Internal-LAN VLAN-Subnet Associations 
 
 Primary range:
 
-10.10.0.0/17 (10.10.0.0 - 10.10.127.255)
+- 10.10.0.0/17 (10.10.0.0 - 10.10.127.255)
 
 Subnet ranges: 
 
-10.10.(VLAN).(10-99)/24 (10.10.10.10 - 10.10.99.99)*
+- 10.10.(VLAN).(10-99)/24 (10.10.10.10 - 10.10.99.99)*
 
-VLAN 10 (Management): 10.10.10.0/24
-VLAN 11 (Infrastructure): 10.10.11.0/24
-VLAN 12 (Storage): 10.10.12.0/24
-VLAN 13 (Backups): 10.10.13.0/24
-VLAN 20 (Labs): 10.10.20.0/24
-VLAN 30 (DMZ): 10.10.30.0/24
-VLAN 999 (Native): None
+- VLAN 10 (Management): 10.10.10.0/24
+- VLAN 11 (Infrastructure): 10.10.11.0/24
+- VLAN 12 (Storage): 10.10.12.0/24
+- VLAN 13 (Backups): 10.10.13.0/24
+- VLAN 20 (Labs): 10.10.20.0/24
+- VLAN 30 (DMZ): 10.10.30.0/24
+- VLAN 999 (Native): None
 
 *Exceptions: Default gateways and broadcast addresses.
 
-### External Home LAN
+### External-LAN VLAN-Subnet Associations
 
 Network range:
 
-192.168.254.0/24 (192.168.254.0 - 192.168.254.255)
+- 192.168.254.0/24 (192.168.254.0 - 192.168.254.255)
 
-VLAN 99 (Out-of-Band/External LAN): 192.168.254.0/24
-VLAN 999 (Native): None
+- VLAN 99 (Out-of-Band/External LAN): 192.168.254.0/24
+- VLAN 999 (Native): None
 
 ## Current Assignments
 
