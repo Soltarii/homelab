@@ -106,6 +106,8 @@ Network range:
 
 ### Out-of-Band/External LAN
 
+| IPv4 Address | Node Type | VMID | VLAN | Name | Purpose |
+|--------------|-----------|------|------|------|---------|
 | 192.168.254.250 | Physical | n/a | 99 | APC 1500 | UPS |
 | 192.168.254.251 | Physical | n/a | 99 | iDRAC | BIOS |
 | 192.168.254.252 | Virtual | 100 | 99 | OPNsense vtnet0 | WAN |

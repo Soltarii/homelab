@@ -110,6 +110,56 @@ P/N: N3K-C3064PQ-10GX
 S/N: 
 UPC: 011110632531
 
+### Connectors - Adapters
+
+Manufacturer: Cisco
+Model: GLC-TE SFP Adapter
+Form Factor: 1000BASE-T RJ45 to SFP
+Throughput: 1Gbps
+Range: 100m
+Count: 1
+Inventory ID: 1
+P/N: 30-1475-03
+S/N: ACW25301KS9 V03
+Mystery Side ID?: CMUIAGBCAC
+Location: Nexus Port 35
+
+Manufacturer: Cisco
+Model: GLC-T SFP Adapter
+Form Factor: 1000BASE-T RJ45 to SFP
+Throughput: 1Gbps
+Range: 100m
+Count: 7
+Inventory ID: 2-5
+P/N: 30-1410-03
+S/N: 2) MTC1116T045; 3) MTC15110GQL; 4) MTC15190F67; 5) MTC1704026V
+Mystery Side ID?: CNS8TUTAAB
+Location: 2) Catalyst SFP Port 1; 3) Nexus Port 33; 4) Catalyst SFP Port 2; 5) Nexus Port 34
+
+Manufacturer: Cisco
+Model: GLC-T SFP Adapter
+Form Factor: 1000BASE-T RJ45 to SFP
+Throughput: 1Gbps
+Range: 100m
+Count: 1
+Inventory ID: 6
+P/N: 30-1410-04
+S/N: MTC2033029P
+Mystery Side ID?: CNS8TUTAAC
+Location: Catalyst SFP Port 3
+
+Manufacturer: Cisco
+Model: GLC-T SFP Adapter
+Form Factor: 1000BASE-T RJ45 to SFP
+Throughput: 1Gbps
+Range: 100m
+Count: 1
+Inventory ID: 7-8
+P/N: 30-1410-02
+S/N: 7) MTC110601F0; 8) MTC082103P4
+Mystery Side ID?: CNS8TUTAAA
+Location: 7) Catalyst SFP Port 4; 8) Nexus Port 36
+
 
 ### Server - Dell PowerEdge R640 E39S Rack-Mountable 1U Server
 
