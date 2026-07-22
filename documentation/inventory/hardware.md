@@ -11,19 +11,30 @@ TO-DO:
 
 Manufacturer: Adtran
 Model: 411 Micro GPON Indoor Optical Network Transceiver
-Dimensions:
-Weight: 
-Features: 
+Ports: 1 RJ-45 Ethernet, 1 RJ-11 Voice, 1 GPON
+Throughput: 10/100/1000Mbps
+Dimensions: 1" (H) x 2.8" (W) x 2.8" (D)
+Features: SFU/SBU/MDU Deployment Support, POTS Support, VoIP via SIP or MGCP, IPTV, IGMP Snooping, Traffic Policing and Shaping.
+MAC Address: 38:F8:F6:1F:6A:1C
+P/N: 1287787F1
+S/N: ADTN23069212
+CLEI: BVMDT00DRA
 
 ### Router
 
-Manufacturer: Nokia
+Manufacturer: Nokia / ALCL
 Model: WiFi Beacon 6
-Dimensions:
-Weight: 
-Features:
-Current Firmware:
-Newest Firmware:
+Ports: 3 RJ-45 Ethernet
+Throughput: 10/100/1000Mbps
+Dimensions: 8.1" (H) x 6.3" (W) x 2.4" (D)
+Weight: 2.9lbs
+Features: Web GUI, WiFi 2.4GHz, WiFi 5GHz-low, WiFi 5GHz-high, DHCP, DNS, QoS, Firewall, Log, Diagnostics, Port Forwarding, Port Triggering, DDNS, UPnP, DLNA
+Current Firmware: 3FE49062KJLJ45
+Newest Firmware: Automatic, ISP-Specific
+SSID: KINECTIC_9b5cf1
+MAC Address: 28:74:F5:9B:5C:F1
+P/N: HA-0336G-A
+S/N: ALCLEB386E50
 
 
 ### Workstation PC
@@ -64,6 +75,7 @@ Features: SmartConnect, Alarm, NEMA 5-15P Input,
 Surge Rating: 645J
 Power Rating: 1350W/1440VA
 Output Voltage: 120V AC 1 Phase
+MAC Address:
 P/N: SMX1500RM2UC
 S/N: AS2152161104
 Product Key: 32EB6C-B6B9-B8FF
@@ -89,9 +101,14 @@ Weight: 13lbs
 Current Firmware: 12.2(55)SE10
 Newest Firmware:
 Features: Console Port, StackWise
-PIDVID (P/N): WS-C3750-48PS-S V05
+MAC Address: 00:16:46:1D:E1:00
+PIDVID: WS-C3750-48PS-S V05
 S/N: CAT0946R243
-HECI/CLEI: COM1W00AR
+Motherboard S/N: CAT09460RYG
+Power Supply S/N: DTH09459KNZ
+SFP Module S/N: CAT09460Z2Z
+HECI/CLEI: COM1W00ARB
+
 
 ### Switch - Core/Distribution
 
@@ -99,15 +116,22 @@ Manufacturer: Cisco
 Model: Nexus 3064-X
 Ports: 48-Port SFP+, 4-Port QSFP+
 Throughput: 100Mbps/1Gbps/10Gbps, 10Gbps/40Gbps
-RAM:
+RAM: 4GB
 Storage: 2GB Flash
 Dimensions: 1.72" (H) x 17.3" (W) x 19.7" (D)
 Weight: 20.5lbs
-Current Firmware:
+Current Firmware: 9.3(10)
 Newest Firmware:
-Features: Control Port, 2 Management Ports, vPC, POAP, EEM, 
-P/N: N3K-C3064PQ-10GX
-S/N: 
+Features: Control Port, 2 Management Ports, vPC, POAP, EEM,
+MAC Address: 
+PIDVID: N3K-C3064PQ-10GX V01
+Power Supply 1 PIDVID: N2200-PAC-400W V05
+Power Supply 2 PIDVID: N2200-PAC-400W V06
+Fan PIDVID: N3K-C3064-FAN-F V00
+S/N: FOC1916R2BU
+Port Supervisor S/N: F0C19224LAH
+Power Supply 1 S/N: LIT21204G2S
+Power Supply 2 S/N: LIT222126X2
 UPC: 011110632531
 
 ### Connectors - Adapters
@@ -160,6 +184,71 @@ S/N: 7) MTC110601F0; 8) MTC082103P4
 Mystery Side ID?: CNS8TUTAAA
 Location: 7) Catalyst SFP Port 4; 8) Nexus Port 36
 
+Manufacturer: Cisco
+Model: GLC-T SFP Adapter
+Form Factor: 1000Base-T RJ45 to SFP
+Throughput: 1Gbps
+Range: 100m
+Count: 1
+Inventory ID: 9
+P/N: 30-1423-02
+S/N: GR110303416
+Location: Currently Unused
+
+Manufacturer: LongLine
+Model: GLC-T-LL
+Form Factor: 1000BASE-T RJ45 to SFP
+Throughput: 1Gbps
+Inventory ID: 10
+P/N: EC1303270672
+S/N: GR1304078640
+Location: Currently Unused
+
+### WLC
+
+Manufacturer: Cisco
+Model: WLAN 2500 Series Controller (Model 2504)
+Ports: 4 RJ45 Ethernet, 1 RJ45 Console
+MAC Address: 44:03:A7:31:9B:C0
+PIDVID: AIR-CT2504-K9 V01
+P/N: 74-7363-03
+S/N: PSZ17020K6U
+Location: Catalyst Fe2/0/5
+
+### APs
+
+Manufacturer: Cisco
+Model: Aironet 1130AG Series
+Ports: 1 RJ45 Ethernet, 1 RJ45 Console
+Throughput: 54Mbps
+Count: 1
+MAC Address: 00:12:D9:2B:35:98
+PIDVID: AIR-AP1131AG-A-K9 V01
+P/N: 47-16546-02 Rev A0
+S/N: FTX0906T08B
+Location: Currently Unused
+
+Manufacturer: Cisco
+Model: Aironet 3500 Series (Model 3502)
+Ports: 1 RJ45 Ethernet, 1 RJ45 Console
+Throughput:
+Count: 1
+MAC Address: 70:CA:9B:99:41:E0
+PIDVID: AIR-CAP3502E-A-K9 V01
+P/N: 47-22552-01 Rev A0
+S/N: FTX1550E61L
+Location: Currently Unused
+
+Manufacturer: Cisco
+Model: Aironet 3500 Series (Model 3502)
+Ports: 1 RJ45 Ethernet, 1 RJ45 Console
+Throughput:
+Count: 1
+MAC Address: 70:81:05:51:31:DE
+PIDVID: AIR-CAP3502I-T-K9 V01
+P/N: 47-22587-01 Rev B0
+S/N: FGL1533S2W5
+Location: Currently Unused
 
 ### Server - Dell PowerEdge R640 E39S Rack-Mountable 1U Server
 
@@ -228,6 +317,7 @@ Manufacturer:
 Model: BCM57414
 Throughput: 10Gbps/25Gbps
 Features: 2 NIC Ports
+MAC Addresses:
 PCI ID: 5e:00.0, 5e:00.1
 P/N: 024GFD
 S/N: 
@@ -238,6 +328,7 @@ Manufacturer:
 Model: BCM5720
 Throughput:
 Features: 4 NIC Ports
+MAC Addresses:
 PCI ID: 18:00.0, 18:00.1, 19:00.0, 19:00.1
 P/N: 0FM487
 S/N: 
