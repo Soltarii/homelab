@@ -36,7 +36,6 @@ MAC Address: 28:74:F5:9B:5C:F1
 P/N: HA-0336G-A
 S/N: ALCLEB386E50
 
-
 ### Workstation PC
 
 ## Internal-LAN Hardware
@@ -44,7 +43,7 @@ S/N: ALCLEB386E50
 ### Rack - 10U Server Cabinet
 
 Manufacturer:
-Dimensions: 31.5" (D) x 23.5" (W) x 25.5" (H)
+Dimensions: 25.5" (H) x 23.5" (W) x 31.5" (D)
 Weight:
 Capacity: 
 Features: Vented Doors, Caster Wheels, Cabinet Fan
@@ -56,22 +55,38 @@ Accessory S/N:
 ### UNUSED - Rack - 8U AxcessAbles Homelab Server Rack
 
 Manufacturer: AxcessAbles
-Dimensions: 18" (D) x 20" (W) x 20" (H)
+Dimensions: 20" (H) x 20" (W) x 18" (D)
 Weight: 31lbs
 Capacity: 440 lbs
 Features: Caster Wheels, Open Front, Open Back
 UPC: 810037260403
 ASIN: B08XX7WL68
 
-### UPS - APC Smart-UPS X
+### Power Strip
+
+Manufacturer: Simply Conserve
+Model: Advanced Power Strip SC73T1
+Outlets: 7 (1 Master, 4 Switched, 2 Always-On)
+Dimensions: 1.3" (H) x 12.7" (W) x 2.3" (D)
+Weight: 1lb
+Features: Master Control Outlet, Surge Protection, Mountable
+P/N: SC73T1
+S/N: LTS-AM01
+Surge Rating: 1440J
+Amperage Rating: 15A
+Voltage Rating: 125V
+Power Rating: 1875W
+
+### UNUSED - UPS - APC Smart-UPS X
 
 Manufacturer: APC (American Power Conversion)
 Model: Smart-UPS X 1500VA
-Dimensions: 19.3" (D) x 17" (W) x 3.5" (H)
+Outlets: 8 (Group 1: 2, Group 2: 2, Group 3: 4)
+Dimensions: 3.5" (H) x 17" (W) x 19.3" (D)
 Weight: 55lbs
 Current Firmware: 02.0 - 1031
 Newest Firmware: 15.5 - 1031
-Features: SmartConnect, Alarm, NEMA 5-15P Input, 
+Features: SmartConnect, Alarm, NEMA 5-15P Input, Grouped Outlets
 Surge Rating: 645J
 Power Rating: 1350W/1440VA
 Output Voltage: 120V AC 1 Phase
@@ -209,6 +224,8 @@ Location: Currently Unused
 Manufacturer: Cisco
 Model: WLAN 2500 Series Controller (Model 2504)
 Ports: 4 RJ45 Ethernet, 1 RJ45 Console
+Dimensions:
+Weight:
 MAC Address: 44:03:A7:31:9B:C0
 PIDVID: AIR-CT2504-K9 V01
 P/N: 74-7363-03
@@ -221,6 +238,8 @@ Manufacturer: Cisco
 Model: Aironet 1130AG Series
 Ports: 1 RJ45 Ethernet, 1 RJ45 Console
 Throughput: 54Mbps
+Dimensions:
+Weight:
 Count: 1
 MAC Address: 00:12:D9:2B:35:98
 PIDVID: AIR-AP1131AG-A-K9 V01
@@ -232,6 +251,8 @@ Manufacturer: Cisco
 Model: Aironet 3500 Series (Model 3502)
 Ports: 1 RJ45 Ethernet, 1 RJ45 Console
 Throughput:
+Dimensions:
+Weight:
 Count: 1
 MAC Address: 70:CA:9B:99:41:E0
 PIDVID: AIR-CAP3502E-A-K9 V01
@@ -243,6 +264,8 @@ Manufacturer: Cisco
 Model: Aironet 3500 Series (Model 3502)
 Ports: 1 RJ45 Ethernet, 1 RJ45 Console
 Throughput:
+Dimensions:
+Weight:
 Count: 1
 MAC Address: 70:81:05:51:31:DE
 PIDVID: AIR-CAP3502I-T-K9 V01

@@ -67,6 +67,7 @@ Network range:
 | 10.10.11.10 | Virtual | 110 | 11 | Automation | Automation |
 | 10.10.11.11 | Virtual | 111 | 11 | Monitoring | Monitoring |
 | 10.10.11.12 | Virtual | 112 | 11 | Security | Security |
+| 10.10.11.253 | Virtual | n/a | 11 | Proxmox vmbr1.11 | Hypervisor/LAN |
 | 10.10.11.254 | Virtual | 100 | 11 | OPNsense VLAN 11 | DG/DNS |
 | 10.10.11.255 | Virtual | 100 | 11 | VLAN 11 Broadcast | Broadcast |
 
@@ -75,6 +76,7 @@ Network range:
 | IPv4 Address | Node Type | VMID | VLAN | Name | Purpose |
 |--------------|-----------|------|------|------|---------|
 | 10.10.12.10 | Virtual | 120 | 12 | TrueNAS | Storage |
+| 10.10.12.253 | Virtual | n/a | 12 | Proxmox vmbr1.12 | Hypervisor/LAN |
 | 10.10.12.254 | Virtual | 100 | 12 | OPNsense VLAN 12 | DG/DNS |
 | 10.10.12.255 | Virtual | 100 | 12 | VLAN 12 Broadcast | Broadcast |
 
@@ -84,6 +86,7 @@ Network range:
 |--------------|-----------|------|------|------|---------|
 | 10.10.13.10 | Virtual | 130 | 13 | PBS-Primary | Backup |
 | 10.10.13.11 | Virtual | 131 | 13 | PBS-Secondary | Backup |
+| 10.10.13.253 | Virtual | n/a | 13 | Proxmox vmbr1.13 | Hypervisor/LAN |
 | 10.10.13.254 | Virtual | 100 | 13 | OPNsense VLAN 13 | DG/DNS |
 | 10.10.13.255 | Virtual | 100 | 13 | VLAN 13 Broadcast | Broadcast |
 
@@ -101,6 +104,7 @@ Network range:
 |--------------|-----------|------|------|------|---------|
 | 10.10.30.10 | Virtual | 300 | 30 | Wiki.js | Documentation |
 | 10.10.30.11 | Virtual | 301 | 30 | Minecraft | Server |
+| 10.10.30.253 | Virtual | n/a | 30 | Proxmox vmbr1.30 | Hypervisor/LAN |
 | 10.10.30.254 | Virtual | 100 | 30 | OPNsense VLAN 30 | DG/DNS |
 | 10.10.30.255 | Virtual | 100 | 30 | VLAN 30 Broadcast | Broadcast |
 

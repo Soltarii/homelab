@@ -188,42 +188,42 @@ Gateway: Any
 Schedule: Any
 Description: let out anything from firewall host itself
 
-### DMZ
+### Internal
 
-Count:18
+Count: 15
 
 Entry ID: 1-12
 Floating Rules
 
 Entry ID: 13
-Type: Manual
+Type: Automatic
 Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 TCP
+Protocols: IPv4+6 TCP
 Source: Any
 Source Port: Any
-Destination: 10.10.50.2/32
-Destination Port: Any - 25565
+Destination: (self)
+Destination Port: HTTP (80)
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 TCP traffic to Minecraft VM from anywhere
+Description: anti-lockout rule
 
 Entry ID: 14
-Type: Manual
+Type: Automatic
 Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4+6 Any
-Source: Management Network
+Protocols: IPv4+6 TCP
+Source: Any
 Source Port: Any
-Destination: DMZ Network
-Destination Port: Any
+Destination: (self)
+Destination Port: HTTPS (443)
 Gateway: Any
 Schedule: Any
-Description: Allow all traffic from Management Network to DMZ Network
+Description: anti-lockout rule
 
 Entry ID: 15
 Type: Manual
@@ -232,62 +232,17 @@ State: Active
 Direction: In
 Applies: First Match
 Protocols: IPv4+6 Any
-Source: DMZ Network
-Source Port: Any
-Destination: Management Network
-Destination Port: Any
-Gateway: Any
-Schedule: Any
-Description: Block any traffic from DMZ Network to Management Network
-
-Entry ID: 16
-Type: Manual
-Action: Block
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv4+6 Any
-Source: DMZ Network
-Source Port: Any
-Destination: Labs Network
-Destination Port: Any
-Gateway: Any
-Schedule: Any
-Description: Block any traffic from DMZ Network to Labs Network
-
-Entry ID: 17
-Type: Manual
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv4+6 Any
-Source: DMZ Network
+Source: Any
 Source Port: Any
 Destination: Any
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any traffic from DMZ Network to anywhere
+Description: Block any untagged traffic from anywhere to anywhere.
 
-Entry ID: 18
-Type: Manual
-Action: Allow
-State: Inactive
-Direction: In
-Applies: First Match
-Protocols: IPv4 Any
-Source: DMZ Network
-Source Port: Any
-Destination: Management Network
-Destination Port: Any
-Gateway: Any
-Schedule: Any
-Description: Allow any IPv4 traffic from DMZ Network to Management Network (TESTING ONLY)
+### Management
 
-### Labs
-
-Count: 24
+Count: 13
 
 Entry ID: 1-12
 Floating Rules
@@ -301,11 +256,33 @@ Applies: First Match
 Protocols: IPv4+6 Any
 Source: Management Network
 Source Port: Any
-Destination: Labs Network
+Destination: Any
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any traffic from Management Network to Labs Network
+Description: Allow any traffic from Management Network to anywhere.
+
+### Infrastructure
+
+Count: 20
+
+Entry ID: 1-12
+Floating Rules
+
+Entry ID: 13
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
+Source Port: Any
+Destination: Management Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any traffic from Infrastructure Network to Management Network.
 
 Entry ID: 14
 Type: Manual
@@ -313,14 +290,14 @@ Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4+6 TCP/UDP
-Source: Labs Network
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
 Source Port: Any
-Destination: This Firewall
-Destination Port: DOMAIN (53)
+Destination: Infrastructure Network
+Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 DNS traffic from Labs Network to OPNsense Port 53
+Description: Allow any traffic from Infrastructure Network to Infrastructure Network.
 
 Entry ID: 15
 Type: Manual
@@ -328,14 +305,14 @@ Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 TCP
-Source: 10.10.10.1
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
 Source Port: Any
-Destination: 10.10.254.252
-Destination Port: HTTPS (443)
+Destination: Storage Network
+Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 HTTPS traffic from Windows Server to TrueNAS Management Port 443
+Description: Allow any traffic from Infrastructure Network to Storage Network.
 
 Entry ID: 16
 Type: Manual
@@ -343,14 +320,14 @@ Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 TCP
-Source: 10.10.10.1/32
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
 Source Port: Any
-Destination: 10.10.254.254
-Destination Port: HTTPS (443)
+Destination: Labs Network
+Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 HTTPS traffic from Windows Server to OPNsense Management Port 443
+Description: Allow any traffic from Infrastructure Network to Labs Network.
 
 Entry ID: 17
 Type: Manual
@@ -358,29 +335,156 @@ Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 TCP
-Source: 10.10.10.1
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
 Source Port: Any
-Destination: 10.10.254.253
-Destination Port: 8006
+Destination: DMZ Network
+Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 TCP traffic from Windows Server to Proxmox Management Port 8006
+Description: Allow any traffic from Infrastructure Network to DMZ Network.
 
 Entry ID: 18
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
+Source Port: Any
+Destination: Backups Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Infrastructure Network to Backups Network.
+
+Entry ID: 19
+Type: Manual
+Action: Reject
+State: Inactive
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
+Source Port: Any
+Destination: WAN Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Infrastructure Network to External-LAN Network.
+
+Entry ID: 20
 Type: Manual
 Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 ICMP
-Source: 10.10.10.1
+Protocols: IPv4+6 Any
+Source: Infrastructure Network
+Source Port: Any
+Destination: Any
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any traffic from Infrastructure Network to anywhere (Internet).
+
+### Storage
+
+Count: 19
+
+Entry ID: 1-12
+Floating Rules
+
+Entry ID: 13
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Storage Network
 Source Port: Any
 Destination: Management Network
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 ICMP traffic from Windows Server to Management Network
+Description: Allow any traffic from Storage Network to Management Network.
+
+Entry ID: 14
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Storage Network
+Source Port: Any
+Destination: Storage Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any traffic from Storage Network to Storage Network.
+
+Entry ID: 15
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Storage Network
+Source Port: Any
+Destination: Backups Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any traffic from Storage Network to Backups Network.
+
+Entry ID: 16
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Storage Network
+Source Port: Any
+Destination: Infrastructure Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Storage Network to Infrastructure Network.
+
+Entry ID: 17
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Storage Network
+Source Port: Any
+Destination: Labs Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Storage Network to Labs Network.
+
+Entry ID: 18
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Storage Network
+Source Port: Any
+Destination: DMZ Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Storage Network to DMZ Network.
 
 Entry ID: 19
 Type: Manual
@@ -389,15 +493,104 @@ State: Active
 Direction: In
 Applies: First Match
 Protocols: IPv4+6 Any
-Source: Lab Network
+Source: Storage Network
+Source Port: Any
+Destination: WAN Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Storage Network to External-LAN Network.
+
+### Backups
+
+Count: 13
+
+Entry ID: 1-12
+Floating Rules
+
+Entry ID: 13
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Backups Network
+Source Port: Any
+Destination: Any
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any traffic from Backups Network to anywhere.
+
+### Labs
+
+Count: 22
+
+Entry ID: 1-12
+Floating Rules
+
+Entry ID: 13
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Labs Network
 Source Port: Any
 Destination: Management Network
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Reject any traffic from Labs Network to Management Network
+Description: Reject any traffic from Labs Network to Management Network.
 
-Entry ID: 20
+Entry ID: 14
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Lab Network
+Source Port: Any
+Destination: Infrastructure Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Labs Network to Infrastructure Network.
+
+Entry ID: 15
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Lab Network
+Source Port: Any
+Destination: Storage Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Labs Network to Storage Network.
+
+Entry ID: 16
+Type: Manual
+Action: Reject
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Lab Network
+Source Port: Any
+Destination: Backups Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Reject any traffic from Labs Network to Backups Network.
+
+Entry ID: 17
 Type: Manual
 Action: Reject
 State: Active
@@ -410,9 +603,9 @@ Destination: DMZ Network
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Reject any traffic from Labs Network to DMZ Network
+Description: Reject any traffic from Labs Network to DMZ Network.
 
-Entry ID: 21
+Entry ID: 18
 Type: Manual
 Action: Reject
 State: Active
@@ -425,39 +618,54 @@ Destination: WAN Network
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Reject any traffic from Labs Network to WAN Network
+Description: Reject any traffic from Labs Network to WAN Network.
 
-Entry ID: 22
+Entry ID: 19
 Type: Manual
 Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 TCP/UDP
-Source: Lab Network
+Protocols: IPv4+6 TCP/UDP
+Source: Labs Network
 Source Port: Any
-Destination: Any
-Destination Port: HTTP (80)
+Destination: This Firewall
+Destination Port: DOMAIN (53)
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 TCP/UDP traffic from Labs Network to anywhere Port 80
+Description: Allow any IPv4 DNS traffic from Labs Network to OPNsense Port 53.
 
-Entry ID: 23
+Entry ID: 20
 Type: Manual
 Action: Allow
 State: Active
 Direction: In
 Applies: First Match
 Protocols: IPv4 TCP/UDP
-Source: Lab Network
+Source: Labs Network
 Source Port: Any
 Destination: Any
 Destination Port: HTTPS (443)
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 TCP/UDP traffic from Labs Network to anywhere Port 443
+Description: Allow any IPv4 TCP/UDP traffic from Labs Network to anywhere Port 443 (Internet).
 
-Entry ID: 24
+Entry ID: 21
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4 TCP/UDP
+Source: Labs Network
+Source Port: Any
+Destination: Any
+Destination Port: HTTP (80)
+Gateway: Any
+Schedule: Any
+Description: Allow any IPv4 TCP/UDP traffic from Labs Network to anywhere Port 80 (Internet).
+
+Entry ID: 22
 Type: Manual
 Action: Allow
 State: Active
@@ -470,209 +678,119 @@ Destination: Any
 Destination Port: NTP (123)
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 TCP/UDP traffic from Labs Network to anywhere Port 123
+Description: Allow any IPv4 TCP/UDP traffic from Labs Network to anywhere Port 123 (Internet).
 
-### Management
+### DMZ
 
-Count: 24
+Count: 19
 
-Entry ID: 1-11
+Entry ID: 1-12
 Floating Rules
 
-Entry ID: 12
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv4 UDP
-Source: Any
-Source Port: 68
-Destination: 255.255.255.255
-Destination Port: 67
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
 Entry ID: 13
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv4+6 UDP
-Source: Any
-Source Port: 68
-Destination: (self)
-Destination Port: 67
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 14
-Type: Automatic
-Action: Allow
-State: Active
-Direction: Out
-Applies: First Match
-Protocols: IPv4+6 UDP
-Source: (self)
-Source Port: 67
-Destination: Any
-Destination Port: 68
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 15
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv6 UDP
-Source: fe80::/10
-Source Port: Any
-Destination: fe80::/10, ff02::/16
-Destination Port: 546
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 16
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv6 UDP
-Source: fe80::/10
-Source Port: Any
-Destination: ff02::/16
-Destination Port: 547
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 17
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv6 UDP
-Source: ff02::/16
-Source Port: Any
-Destination: fe80::/10
-Destination Port: 547
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 18
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv6 UDP
-Source: fe80::/10
-Source Port: Any
-Destination: (self)
-Destination Port: 546
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 19
-Type: Automatic
-Action: Allow
-State: Active
-Direction: Out
-Applies: First Match
-Protocols: IPv6 UDP
-Source: (self)
-Source Port: 547
-Destination: fe80::/10
-Destination Port: Any
-Gateway: Any
-Schedule: Any
-Description: allow access to DHCP server
-
-Entry ID: 20
-Type: Automatic
-Action: Allow
-State: Active
-Direction: Out
-Applies: Last Match
-Protocols: IPv4+6 Any
-Source: Any
-Source Port: Any
-Destination: Any
-Destination Port: Any
-Gateway: Any
-Schedule: Any
-Description: let out anything from firewall host itself
-
-Entry ID: 21
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv4+6 TCP
-Source: Any
-Source Port: Any
-Destination: (self)
-Destination Port: HTTP (80)
-Gateway: Any
-Schedule: Any
-Description: anti-lockout rule
-
-Entry ID: 22
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv4+6 TCP
-Source: Any
-Source Port: Any
-Destination: (self)
-Destination Port: HTTPS (443)
-Gateway: Any
-Schedule: Any
-Description: anti-lockout rule
-
-Entry ID: 23
 Type: Manual
 Action: Allow
 State: Active
 Direction: In
 Applies: First Match
-Protocols: IPv4 Any
-Source: 10.10.10.1
+Protocols: IPv4 TCP
+Source: Any
+Source Port: Any
+Destination: 10.10.30.11
+Destination Port: Any - 25565
+Gateway: Any
+Schedule: Any
+Description: Allow any IPv4 TCP traffic from anywhere to Minecraft VM Port 25565.
+
+Entry ID: 14
+Type: Manual
+Action: Block
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: DMZ Network
 Source Port: Any
 Destination: Management Network
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any IPv4 traffic from Windows Server to Management Network
+Description: Block any traffic from DMZ Network to Management Network.
 
-Entry ID: 24
+Entry ID: 15
 Type: Manual
-Action: Allow
+Action: Block
 State: Active
 Direction: In
 Applies: First Match
 Protocols: IPv4+6 Any
-Source: Management Network
+Source: DMZ Network
+Source Port: Any
+Destination: Infrastructure Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Block any traffic from DMZ Network to Infrastructure Network.
+
+Entry ID: 16
+Type: Manual
+Action: Block
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: DMZ Network
+Source Port: Any
+Destination: Any
+Destination Port: Storage Network
+Gateway: Any
+Schedule: Any
+Description: Block any traffic from DMZ Network to Storage Network.
+
+Entry ID: 17
+Type: Manual
+Action: Block
+State: Inactive
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: DMZ Network
+Source Port: Any
+Destination: Backups Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Block any traffic from DMZ Network to Backups Network.
+
+Entry ID: 18
+Type: Manual
+Action: Block
+State: Inactive
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: DMZ Network
+Source Port: Any
+Destination: Labs Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Block any traffic from DMZ Network to Labs Network.
+
+Entry ID: 19
+Type: Manual
+Action: Allow
+State: Inactive
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: DMZ Network
 Source Port: Any
 Destination: Any
 Destination Port: Any
 Gateway: Any
 Schedule: Any
-Description: Allow any traffic from Management Network to anywhere
+Description: Allow any traffic from DMZ Network to anywhere (Internet).
 
 ### WAN
 
@@ -716,36 +834,6 @@ Type: Automatic
 Action: Allow
 State: Active
 Direction: In
-Applies: First Match
-Protocols: IPv4+6 UDP
-Source: Any
-Source Port: 67
-Destination: Any
-Destination Port: 68
-Gateway: Any
-Schedule: Any
-Description: allow DHCP client on WAN
-
-Entry ID: 15
-Type: Automatic
-Action: Allow
-State: Active
-Direction: Out
-Applies: First Match
-Protocols: IPv4+6 UDP
-Source: Any
-Source Port: 68
-Destination: Any
-Destination Port: 67
-Gateway: Any
-Schedule: Any
-Description: allow DHCP client on WAN
-
-Entry ID: 16
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
 Applies: Last Match
 Protocols: IPv4+6 Any
 Source: Any
@@ -756,7 +844,7 @@ Gateway: Any
 Schedule: Any
 Description: let out anything from firewall host itself
 
-Entry ID: 17
+Entry ID: 15
 Type: Automatic (Manual from Destination NAT)
 Action: Allow
 State: Active
@@ -765,8 +853,38 @@ Applies: First Match
 Protocols: IPv4 TCP
 Source: Any
 Source Port: Any
-Destination: 10.10.50.2
+Destination: 10.10.30.11
 Destination Port: 25565
 Gateway: Any
 Schedule: Any
-Description: Redirect IPv4 TCP Port 25565 traffic from WAN interface to Minecraft VM
+Description: Redirect IPv4 TCP Port 25565 traffic from WAN interface to Minecraft VM.
+
+Entry ID: 16
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4 Any
+Source: 192.168.254.100
+Source Port: Any
+Destination: Any
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any IPv4 traffic from Workstation PC to anywhere.
+
+Entry ID: 17
+Type: Manual
+Action: Allow
+State: Active
+Direction: In
+Applies: First Match
+Protocols: IPv4+6 Any
+Source: Any
+Source Port: Any
+Destination: DMZ Network
+Destination Port: Any
+Gateway: Any
+Schedule: Any
+Description: Allow any traffic from anywhere to DMZ Network.
