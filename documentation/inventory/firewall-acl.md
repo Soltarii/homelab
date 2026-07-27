@@ -4,6 +4,34 @@ This following documentation is intended to be an authoritative source of the ac
 
 ## OPNsense Firewalls
 
+## Outbound NAT
+
+Count: 2
+
+Entry ID: 1
+Type: Automatic
+Interface: WAN
+Source Networks: Backups networks, DMZ networks, Infrastructure networks, Labs networks, Loopback networks, Management networks, Storage networks, 127.0.0.0/8
+Source Port: Any
+Destination: Any
+Destination Port: 500
+NAT Address: WAN
+NAT Port: Any
+Static Port: Yes
+Description: Auto created rule for ISAKMP
+
+Entry ID: 2
+Type: Automatic
+Interface: WAN
+Source Networks: Backups networks, DMZ networks, Infrastructure networks, Labs networks, Loopback networks, Management networks, Storage networks, 127.0.0.0/8
+Source Port: Any
+Destination: Any
+Destination Port: Any
+NAT Address: WAN
+NAT Port: Any
+Static Port: No
+Description: Auto created rule
+
 ### Floating
 
 Count: 12
@@ -794,57 +822,12 @@ Description: Allow any traffic from DMZ Network to anywhere (Internet).
 
 ### WAN
 
-Count: 17
+Count: 15
 
-Entry ID: 1-11
+Entry ID: 1-12
 Floating Rules
 
-Entry ID: 12
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: First Match
-Protocols: IPv6 UDP
-Source: Any
-Source Port: Any
-Destination: fe80::/10
-Destination Port: 546
-Gateway: Any
-Schedule: Any
-Description: allow dhcpv6 client in WAN
-
 Entry ID: 13
-Type: Automatic
-Action: Allow
-State: Active
-Direction: Out
-Applies: First Match
-Protocols: IPv6 UDP
-Source: fe80::/10
-Source Port: 546
-Destination: fe80::/10, ff02::/16
-Destination Port: 547
-Gateway: Any
-Schedule: Any
-Description: allow dhcpv6 client out WAN
-
-Entry ID: 14
-Type: Automatic
-Action: Allow
-State: Active
-Direction: In
-Applies: Last Match
-Protocols: IPv4+6 Any
-Source: Any
-Source Port: Any
-Destination: Any
-Destination Port: Any
-Gateway: Any
-Schedule: Any
-Description: let out anything from firewall host itself
-
-Entry ID: 15
 Type: Automatic (Manual from Destination NAT)
 Action: Allow
 State: Active
@@ -859,7 +842,7 @@ Gateway: Any
 Schedule: Any
 Description: Redirect IPv4 TCP Port 25565 traffic from WAN interface to Minecraft VM.
 
-Entry ID: 16
+Entry ID: 14
 Type: Manual
 Action: Allow
 State: Active
@@ -874,7 +857,7 @@ Gateway: Any
 Schedule: Any
 Description: Allow any IPv4 traffic from Workstation PC to anywhere.
 
-Entry ID: 17
+Entry ID: 15
 Type: Manual
 Action: Allow
 State: Active
