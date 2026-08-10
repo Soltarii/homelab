@@ -193,7 +193,7 @@ Phase 1 - Physical Verification
 
 Phase 2 - Verify Reachability
 
-2.1) Attempt to SSH into the Management SVI via "ssh admin@10.10.10.20". Due to old technology, the remote host must accept diffie-hellman-group1-sha1 as a key exchange method.
+2.1) Attempt to SSH into the Management SVI via "ssh admin@10.10.10.20" from a trusted admin workstation. Due to old technology, the remote host must accept diffie-hellman-group1-sha1 as a key exchange method.
 2.2) If unable to SSH in, check SVI reachability by pinging via "ping 10.10.10.20" from within the Internal-LAN.
 2.3) If still unreachable, check SVI reachability to the Nexus switch directly up the chain via "ping 10.10.10.30" from within the Internal-LAN. If the Nexus is unreachable, the problem is likely higher up the chain.
 2.4) Check routing configuration within OPNsense as well as Proxmox, pinging the Management Gateway and vmbr1 via "ping 10.10.10.254" and "ping 10.10.10.253".
@@ -209,8 +209,63 @@ Phase 3 - Console Access
 Phase 4 - Verify Interfaces
 
 4.1) Once inside the CLI, verify interfaces from Privileged Exec mode via "show interfaces status", confirm uplinks are connected, expected ports are UP, and no interfaces are error-disabled.
-4.2) If interface statuses are fine, check vlan configurations via "show vlan brief", confirming all VLANs are defined and assigned 
+4.2) If interface statuses are fine, check vlan configurations via "show vlan brief", confirming all VLANs are defined and assigned: 10 - Management, 11 - Infrastructure, 20 - Labs, 30 - DMZ, 999 - Native.
+4.3) Check port-channels via "show etherchannel summary", confirming that all member ports are bundled and no interfaces are suspended.
+4.4) Check interface trunks are correctly configured via "show interfaces trunk", confirming the Native VLAN is 999, and allowed VLANs are set (10, 11, 20, 30, 999).
+
+Phase 5 - Verify Protocols
+
+5.1) Check the MAC address table via "show mac address-table", verifying all expected entries (but especially Proxmox, OPNsense, and TrueNAS) all appear and on expected ports and addresses.
+5.2) Check STP via "show spanning-tree", confirming the root bridge reports as expected, and there are no unexpected blocked ports.
+
+Phase 6 - After Resolution
+
+Following the correction to any misconfigurations causing issues, remember to document changes and especially to save them to the startup-config to be persistent via "copy run start" from Privileged Exec mode.
 
 ## Nexus Recovery
 
 In the event of operational failure within or to the Nexus 3064-X switch, proceed as follows:
+
+Phase 0 - Check Previous Issues
+
+The Nexus 3064-X has been encountered to have previous issues in the past that were eventually resolved, including misconfigured management interfaces, link port configuration, port-channel configurations, and physically-incompatible SFP adapters. Check to see if any of these previously documented issues match the scenario for a more specific recovery breakdown.
+
+Phase 1 - Physical Verification
+
+1.1) Confirm the switch is powered on: System LEDs should light up solid orange, rear PSU LEDs should be green, fans should be audibly spinning.
+1.2) Confirm the switch is plugged into the corresponding R640 NIC ports (Fiber links to nic4 & nic5) and the uplink lights are green.
+1.3) Confirm the switch links to the Catalyst 3750 are plugged in and uplink lights are green (if downstream appliance access is the issue).
+
+Phase 2 - Verify Reachability
+
+2.1) Attempt to SSH into the Management SVI via "ssh admin@10.10.10.30" from a trusted admin workstation.
+2.2) If unable to SSH in, check SVI reachability by pinging via "ping 10.10.10.30" from within the Internal-LAN.
+2.3) If still unreachable, check Management VLAN gateway and Proxmox interface reachability via "ping 10.10.10.254" and "ping 10.10.10.253".
+2.4) Check routing configuration and firewall rules within OPNsense, verifying there are no rules blocking expected switch access.
+
+Phase 3 - Console Access
+
+3.1) If SSH is unavailable, connect to either dedicated Management Port (MGMT0 / MGMT1) on the rear face of the Nexus 3064-X with a known-good Ethernet cable to a trusted admin workstation.
+3.2) If Ethernet connection fails, attempt connection to either Management Port or dedicated Serial Port via console connection. Connect a Cisco-certified console cable into any of the aforementioned ports on the rear face of the switch to a trusted admin workstation.
+3.3) Use a virtual terminal software, such as PuTTY, from the connected workstatin using the folowing settings (if console connected): 9600 baud, 8 data bits, 1 stop bits, no parity, no flow control, and connected to the correct COM port (see system Device Manager).
+3.4) Once connected, sign into the Nexus 3064-X with registered admin credentials.
+3.5) If appliance credentials have been lost, the switch will have to proceed with account recovery. If this does not apply, skip to the next phase.
+3.6) For account recovery / password bypass ...
+
+Phase 4 - Verify Interfaces
+
+4.1) Once inside the CLI, verify interfaces from Privileged Exec mode via "show interface status", confirming all uplinks and downlinks are connected, expected ports are UP, and no interfaces are error-disabled.
+4.2) Check port-channels via "show port-channel summary", confirming all port-channels existence, status, and memberships as expected.
+4.3) Check LACP via "show lacp neighbor", confirming the R640 and Catalyst 3750 are recognized neighbors with System ID is present.
+4.4) Check trunk interfaces via "show interface port-channel1 switchport" and "show interface port-channel2 switchport", confirming the mode is trunk, Native VLAN is 999, and allowed vlans are set (10, 11, 20, 30 999).
+
+Phase 5 - Verify Protocols
+
+5.1) Check VLAN database via "show vlan brief", confirming all VLANs exist (10, 11, 20, 30, 999).
+5.2) Check MAC address table via "show mac address-table", verifying all expected entries (but especially Proxmox, OPNsense, and TrueNAS) all appear and on expected ports and addresses.
+5.3) Check LLDP via "show lldp neighbors", confirming the R640/Proxmox and Catalyst 3750 show up.
+5.4) Check switch logs via "show logging last 50" or so, looking for link flaps, STP events, port-channel failures, LACP failures, hardware faults, or anything else that might indicate a cause of issue.
+
+Phase 6 - After Resolution
+
+Following the correction to any misconfigurations causing issues, remember to document changes and especially to save them to the startup-config to be persistent via "copy run start" from Privileged Exec mode.

@@ -73,15 +73,15 @@ The Native VLAN serves as a catch-all for otherwise untagged traffic, usually ac
 
 ### Internal-LAN IP Ranges
 
-Primary range:
+**Primary range**:
 
 - 10.10.0.0/17 (10.10.0.0 - 10.10.127.255)
 
-Subnet ranges: 
+**Subnet ranges**: 
 
 - 10.10.(VLAN).(10-99)/24 (10.10.10.10 - 10.10.99.99)*
 
-VLAN-Subnet Associations:
+**VLAN-Subnet Associations**:
 
 - VLAN 10 (Management): 10.10.10.0/24
 - VLAN 11 (Infrastructure): 10.10.11.0/24
@@ -91,15 +91,15 @@ VLAN-Subnet Associations:
 - VLAN 30 (DMZ): 10.10.30.0/24
 - VLAN 999 (Native): None
 
-*Exceptions: Default gateways and broadcast addresses.
+**Exceptions*: Default gateways and broadcast addresses.
 
 ### External-LAN IP Ranges
 
-Network range:
+**Network range**:
 
 - 192.168.254.0/24 (192.168.254.0 - 192.168.254.255)
 
-VLAN-Subnet Associations:
+**VLAN-Subnet Associations**:
 
 - VLAN 99 (Out-of-Band/External-LAN): 192.168.254.0/24
 - VLAN 999 (Native): None
