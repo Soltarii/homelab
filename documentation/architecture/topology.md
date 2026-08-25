@@ -2,153 +2,340 @@
 
 The following documentation is intended to explain how each node in my environment relate to one another, describing relationships and dependencies rather than individual port numbers or interfaces. For specific details, see "homelab/documentation/inventory/hardware.md". For general information regarding what each node is and the role it plays, see "homelab/documentation/architecture/nodes.md" instead.
 
-### Topology - External-LAN & Internal-LAN
+## Node List
+
+- Optical Network Transceiver (ONT)
+- SOHO Router
+- External-LAN Switch (Planned)
+- Personal Power Strip / Surge Protector
+- Homelab Power Strip / Surge Protector
+- Workstation PC
+	- Workstation PC Network Interface Card (NIC)
+- Uninterruptible Power Supply (UPS) (Planned)
+- Server
+	- Server Chassis
+	- Server Motherboard
+	- Server CPUs
+	- Server Memory
+	- iDRAC
+	- Server Boot Adapter
+		- Local Storage
+		- Hypervisor
+			- Hypervisor External-LAN Virtual Bridge
+			- Hypervisor Internal-LAN Virtual Bridge
+			- Hypervisor Bond Interface
+			- Hypervisor Infrastructure VLAN Interface
+			- Hypervisor Storage VLAN Interface
+			- Hypervisor Backups VLAN Interface
+			- Hypervisor DMZ VLAN Interface
+	- Server Backplane
+	- Server Storage Controller
+	- Server Storage Drives
+	- Server Network Interface Card (NIC) A
+	- Server Network Interface Card (NIC) B
+- Router/Firewall VM
+	- Router/Firewall VM WAN Interface
+	- Router/Firewall VM LAN Interface
+	- Router/Firewall VM Management VLAN Interface
+	- Router/Firewall VM Infrastructure VLAN Interface
+	- Router/Firewall VM Storage VLAN Interface
+	- Router/Firewall VM Backups VLAN Interface
+	- Router/Firewall VM Labs VLAN Interface
+	- Router/Firewall VM DMZ VLAN Interface
+- Storage VM
+	- Storage VM Performance Datastore
+	- Storage VM Bulk Datastore
+	- Storage VM Backups Datastore
+- Primary Backups VM
+- Secondary Backups VM
+- Automation VM
+- Monitoring VM (Planned)
+- Security VM (Planned)
+- Labs VMs
+- DMZ VMs
+- Access Switch
+- Core/Distribution (C/D) Switch
+- Adaptive Security Appliance (ASA) Firewall (Planned)
+- Wireless LAN Controller (WLC) (Planned)
+- Access Point 1 (AP1)
+- Access Point 2 (AP2)
+
+### Domain Spaces - External-LAN & Internal-LAN
 
 The domain spaces comprising my homelab journey comprise what I refer to throughout my documentation as my "External-LAN" and "Internal-LAN". My External-LAN is my residential home network that existed before my IT journey, servicing my workstation PC, phone, and all other devices used by my family members (not covered here). My Internal-LAN is my isolated homelab network that services all of my enterprise networking hardware and virtualized hosts.
 
-Nodes will be categorized and described as within the External-LAN and/or Internal-LAN, roughly ordered by data flow dependency.
+Nodes will be categorized and described as within the External-LAN, Internal-LAN, or between them. Nodes will be roughly ordered by data flow dependency.
+
+### Structure
+
+PARENT NODE (if applicable) - NODE
+
+Dependent on -> NODE -> Dependent to
+
+- Node Type: Is this node classified as physical or virtual?
+- Power Source: Where does this node receive its power from?
+- Dependencies: What is required for this node to start and/or function?
+- Dependencies Connection Type: What connection type does this node use to reach services required for this node's operation?
+- Dependents: What subsequent nodes rely on this one to start and/or function?
+- Dependents Connection Type: What connection type does this node use to distribute its hosted services?
 
 ## External LAN Nodes
 
-### Optical Network Transceiver
+### Optical Network Transceiver (ONT)
 
 ISP -> ONT -> External-LAN (SOHO) Router
 
 - Node Type: Physical
-- Dependent on: ISP
-- Dependent to: External-LAN Router
-- Upstream Connection Type: Fiber Ethernet (FttP)
-- Downstream Connection Type: Copper Ethernet (Flat)
 - Power Source: Shared Home Circuit
+- Dependencies: ISP
+- Dependencies Connection Type: Fiber Ethernet (FttP)
+- Dependents: External-LAN (SOHO) Router
+- Dependents Connection Type: Copper Ethernet (Flat)
 
 ### SOHO Router
 
 ONT -> SOHO Router -> Workstation PC + Server NIC Port A
 
 - Node Type: Physical
-- Dependent on: ONT
-- Dependent to: Workstation PC, Server NIC Port A
-- Upstream Connection Type: Copper Ethernet (Flat)
-- Downstream Connection Type: Copper Ethernet (UTP)
 - Power Source: Dedicated Home Circuit
+- Dependencies: ONT
+- Dependencies Connection Type: Copper Ethernet (Flat)
+- Dependents: Workstation PC, Server NIC Port A
+- Dependents Connection Type: Copper Ethernet (UTP)
+
+### Homelab Power Strip / Surge Protector
+
+Dedicated Home Circuit -> Homelab Power Strip / Surge Protector -> External-LAN Switch + Server PSUs + Access Switch + Core/Distribution Switch + ASA Firewall + WLC + AP1 + AP2
+
+- Node Type: Physical
+- Power Source: Dedicated Home Circuit
+- Dependencies: Dedicated Home Circuit
+- Dependencies Connection Type: Power Cables
+- Dependents: External-LAN Switch, Server PSUs, Access Switch, Core/Distribution Switch, ASA Firewall, WLC, AP1, AP2
+- Dependents Connection Type: Power Cables
 
 ### PLANNED: External-LAN Switch
 
-SOHO Router -> External-LAN Switch -> Workstation PC + iDRAC + UPS
+SOHO Router -> External-LAN Switch -> Workstation PC NIC + Server iDRAC + Server NIC A Port + UPS
 
 - Node Type: Physical
-- Dependent on: External-LAN (SOHO) Router
-- Dependent to: Workstation PC, Server iDRAC, UPS
-- Upstream Connection Type: Copper Ethernet (UTP)
-- Downstream Connection Type: Copper Ethernet (UTP)
-- Power Source: Power Strip/Surge Protection
+- Power Source: Homelab Power Strip / Surge Protector
+- Dependencies: External-LAN (SOHO) Router
+- Dependencies Connection Type: Copper Ethernet (UTP)
+- Dependents: Workstation PC NIC, Server iDRAC, Server NIC A, UPS
+- Dependents Connection Type: Copper Ethernet (UTP)
 
-### Power Strip/Surge Protector
+### Personal Power Strip / Surge Protector
 
-Shared Home Circuit -> Power Strip/Surge Protector -> Workstation PC (+ Workstation Monitors + Workstation DAC + Workstation Sound Mixer) + External-LAN Switch
-
-- Node Type: Physical
-- Dependent on: Shared Home Circuit
-- Dependent to: Workstation PC (+ Workstation Monitors + Workstation DAC + Workstation Sound Mixer)
-- Upstream Connection Type: Power Cables
-- Downstream Connection Type: Power Cables
-- Power Source: Shared Home Circuit 
-
-### Workstation PC
-
-SOHO Router -> Workstation PC ->  Access Switch (intermittent) / Core/Distribution Switch (intermittent)
+Shared Home Circuit -> Power Strip / Surge Protector -> Workstation PC (+ Workstation Monitors + Workstation DAC + Workstation Sound Mixer) + External-LAN Switch
 
 - Node Type: Physical
-- Dependent on: External-LAN (SOHO) Router
-- Dependent to: Access Switch (intermittent), Core/Distribution Switch (intermittent)
-- Upstream Connection Type: Copper Ethernet (UTP)
-- Downstream Connection Type: Console (Serial) (USB-A to DB9 Connector)
-- Power Source: Power Strip/Surge Protector
+- Power Source: Shared Home Circuit
+- Dependencies: Shared Home Circuit
+- Dependencies Connection Type: Power Cables
+- Dependents: Workstation PC (+ Workstation Monitors + Workstation DAC + Workstation Sound Mixer)
+- Dependents Connection Type: Power Cables
 
-### PLANNED: UPS
+### Workstation PC NIC
 
-Dedicated Home Circuit + External-LAN Switch -> UPS -> Server + Access Switch + Core/Distribution Switch + ASA Firewall + WLC
+SOHO Router + Workstation PC -> Workstation PC NIC ->  Access Switch (Intermittent) / Core/Distribution Switch (Intermittent)
 
 - Node Type: Physical
-- Dependent on: Dedicated Home Circuit, External-LAN Switch
-- Dependent to: Server, Access Switch, Core/Distribution Switch, ASA Firewall, WLC
-- Upstream Connection Type: Power Cables, Copper Ethernet (UTP)
-- Downstream Connection Type: Power Cables
+- Power Source: Workstation PC
+- Dependencies: Workstation PC, External-LAN (SOHO) Router
+- Dependencies Connection Type: Copper Ethernet (UTP)
+- Dependents: Access Switch (Intermittent), Core/Distribution Switch (Intermittent)
+- Dependents Connection Type: Console (Serial, USB-A to DB9 Connector)
+
+### PLANNED: Uninterruptible Power Supply (UPS)
+
+Dedicated Home Circuit + External-LAN Switch -> UPS -> Server PSUs + Access Switch + Core/Distribution Switch + ASA Firewall + WLC + AP1 + AP2
+
+- Node Type: Physical
 - Power Source: Dedicated Home Circuit
+- Dependencies: Dedicated Home Circuit, External-LAN Switch
+- Dependencies Connection Type: Power Cables, Copper Ethernet (UTP)
+- Dependents: Server PSUs, Access Switch, Core/Distribution Switch, ASA Firewall, WLC, AP1, AP2
+- Dependents Connection Type: Power Cables
+
+### Server - PSUs
+
+UPS -> Server PSUs -> Server Motherboard
+
+- Node Type: Physical
+- Power Source: UPS
+- Dependencies: Dedicated Home Circuit, UPS
+- Dependencies Connection Type: Power Cables
+- Dependents: Server Motherboard
+- Dependents Connection Type: Internal
 
 ### PLANNED: Server - iDRAC 
 
-External-LAN Switch + Server -> iDRAC -> Server
+External-LAN Switch + Server Motherboard -> iDRAC -> Server
 
 - Node Type: Physical
-- Dependent on: External-LAN Switch, Server
-- Dependent to: Server
-- Upstream Connection Type: Copper Ethernet (UTP)
-- Downstream Connection Type: Internal
-- Power Source: Server
-
-### Server - Network Interface Card Port A
-
-SOHO Router + Server -> Server NIC Port A -> Server, Hypervisor External-LAN Virtual Bridge
-
-- Node Type: Physical
-- Dependent on: External-LAN (SOHO) Router
-- Dependent to: Server
-- Upstream Connection Type: Copper Ethernet (UTP)
-- Downstream Connection Type: Internal
-- Power Source: Server
-
-Reliant on the server to host and SOHO router to communicate upstream,
+- Power Source: Server PSUs
+- Dependencies: External-LAN Switch, Server Motherboard
+- Dependencies Connection Type: Copper Ethernet (UTP), Internal
+- Dependents: Server
+- Dependents Connection Type: Internal
 
 ### Hypervisor External-LAN Virtual Bridge
 
-Server NIC Port A -> Hypervisor External-LAN Virtual Bridge -> Router/Firewall VM WAN Interface
+Server NIC A + Hypervisor -> Hypervisor External-LAN Virtual Bridge -> Router/Firewall VM WAN Interface
 
 - Node Type: Virtual
-- Dependent on: Server NIC Port A
-- Dependent to: Router/Firewall VM WAN Interface
-- Upstream Connection Type: Internal
-- Downstream Connection Type: Virtual
-- Power Source: Server
+- Power Source: Server PSUs
+- Dependencies: Server NIC A, Hypervisor
+- Dependencies Connection Types: Internal, Virtual
+- Dependents: Router/Firewall VM WAN Interface
+- Dependents Connection Type: Virtual
 
 ### Router/Firewall VM WAN Interface
 
-Hypervisor External-LAN Virtual Bridge -> Router/Firewall VM WAN Interface -> Router/Firewall VM
+Hypervisor External-LAN Virtual Bridge + Router/Firewall VM -> Router/Firewall VM WAN Interface -> All VMs and Internal Services
 
 - Node Type: Virtual
-- Dependent on: Hypervisor External-LAN Virtual Bridge
-- Dependent to: Router/Firewall VM
-- Upstream Connection Type: Virtual
-- Downstream Connection Type: Virtual
-- Power Source: Router/Firewall VM
+- Power Source: Server PSUs
+- Dependencies: Hypervisor External-LAN Virtual Bridge, Router/Firewall VM
+- Dependents: All VMs and Internal Services
+- Dependencies Connection Type: Virtual
+- Dependents Connection Type: Virtual
 
-## Internal LAN Nodes
+## Between Nodes
+
+### Workstation PC
+
+Personal Power Strip / Surge Protector + VPN -> Workstation PC -> Workstation PC NIC
+
+- Node Type: Physical
+- Power Source: Personal Power Strip / Surge Protector
+- Dependencies: Personal Power Strip / Surge Protector, VPN
+- Dependencies Connection Types: Power Cables, Virtual
+- Dependents: Workstation PC NIC
+- Dependents Connection Type: Internal
+
+### Server - Motherboard
+
+Server PSUs -> Server Motherboard -> Server Memory + Server CPUs + Server Storage Controller + Server Backplane + Server Storage Drives + Server Boot Storage Controller
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs
+- Dependencies Connection Type: Internal
+- Dependents: Server Memory, Server CPUs, Server Storage Controller, Server Backplane, Server Storage Drives, Server Boot Storage Controller
+- Dependents Connection Type: Internal
+
+### Server - Memory
+
+Server PSUs + Server Motherboard -> Server Memory -> Server CPUs
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard
+- Dependencies Connection Type: Internal
+- Dependents: Server CPUs
+- Dependents Connection Type: Internal
+
+### Server - CPUs
+
+Server PSUs + Server Motherboard + Server Memory -> Server CPUs -> Server Storage Controller, Server Backplane, Server Boot Storage Controller, Server NICs (A, B)
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard, Server Memory
+- Dependencies Connection Type: Internal
+- Dependents: Server Storage Controller, Server Backplane, Server Boot Storage Controller, Server NICs (A, B)
+- Dependents Connection Type: Internal
+
+### Server - Storage Controller
+
+Server PSUs + Server Motherboard + Server Memory + Server CPUs -> Server Storage Controller -> Server Backplane
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard, Server Memory, Server CPUs
+- Dependencies Connection Type: Internal
+- Dependents: Server Backplane
+- Dependents Connection Type: Internal
+
+### Server - Backplane
+
+Server PSUs + Server Motherboard + Server Memory + Server CPUs + Server Storage Controller -> Server Backplane -> Server Storage Drives
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard, Server Memory, Server CPUs, Server Storage Controller
+- Dependencies Connection Type: Internal
+- Dependents: Server Storage Drives
+- Dependents Connection Type: Internal
+
+### Server - Boot Storage Controller
+
+Server PSUs + Server Motherboard + Server Memory + Server CPUs -> Server Boot Storage Controller -> Storage Drives
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard, Server Memory, Server CPUs
+- Dependencies Connection Type: Internal
+- Dependents: Storage Drives
+- Dependents Connection Type: Internal
+
+### Server - Storage Drives
+
+Server PSUs + Server Motherboard + Server Memory + Server CPUs + Server Storage Controller + Server Backplane + Server Boot Storage Controller -> Storage Drives -> Local Storage + Storage VM Datastores (Performance, Bulk, Backups)
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard, Server Memory, Server CPUs, Server Storage Controller, Server Backplane, Server Boot Storage Controller
+- Dependencies Connection Type: Internal
+- Dependents: Local Storage, Storage VM Datastores (Performance, Bulk, Backups)
 
 ### Server
 
-Power Strip/Surge Protector / UPS -> Server -> Server NIC Ports (A, B, C, D, E, F) + iDRAC + Hypervisor + Router/Firewall VM + Storage VM
+Server PSUs + Server Motherboard + Server Memory + Server CPUs + Server Storage Controller + Server Backplane + Server Storage Drives + iDRAC + Server Boot Storage Controller -> Server -> Server NICs (A, B) + Local Storage + Hypervisor
 
 - Node Type: Physical
-- Dependent on: Power Strip/Surge Protector / UPS
-- Dependent to: Server NIC Ports (A, B, C, D, E, F), iDRAC, Hypervisor
-- Upstream Connection Type: Power Cables, Internal
-- Downstream Connection Type: Virtual
-- Power Source: Power Strip/Surge Protector / UPS
+- Power Source: Server PSUs
+- Dependencies: Server PSUs, Server Motherboard, Server Memory, Server CPUs, Server Storage Controller, Server Backplane, Server Storage Drives, iDRAC, Server Boot Storage Controller
+- Dependencies Connection Types: Power Cables, Internal, Virtual
+- Dependents: Server NICs (A, B), Local Storage, Hypervisor
+- Dependents Connection Type: Virtual
 
-The collective physical server, considered the heart but also the boundary, partially internal and partially external, depends only a power source. The server then serves its component NIC ports, iDRAC port, hypervisor, and critical infrastructure VMs (Router/Firewall VM + Storage VM, via access to Local storage).
+### Server - Network Interface Card (NIC) A
+
+SOHO Router + Server -> Server NIC A -> Hypervisor External-LAN Virtual Bridge
+
+- Node Type: Physical
+- Power Source: Server PSUs
+- Dependencies: External-LAN (SOHO) Router, Server
+- Dependencies Connection Type: Copper Ethernet (UTP), Internal
+- Dependents: Hypervisor External-LAN Virtual Bridge
+- Dependents Connection Type: Virtual
+
+### Server - Local Storage
+
+Server Boot Storage Controller + Server Storage Drives -> Local Storage -> Hypervisor + Router/Firewall VM + Storage VM
+
+- Node Type: Virtual
+- Power Source: Server PSUs
+- Dependencies: Server Boot Storage Controller, Server Storage Drives
+- Dependencies Connection Type: Internal
+- Dependents: Hypervisor, Router/Firewall VM, Storage VM
+- Dependents Connection Type: Virtual
 
 ### Hypervisor
 
-Server -> Hypervisor -> Hypervisor Virtual Bridges (Internal-LAN, External-LAN) + Server
+Server -> Hypervisor -> Hypervisor Virtual Bridges (Internal-LAN, External-LAN) + Hypervisor Bond Interface + Hypervisor VLAN Interfaces (Infrastructure, Storage, Backups, DMZ) + Hypervisor NFS Datastores (Performance, Bulk, Backups)
 
 - Node Type: Virtual
-- Dependent on: Server
-- Dependent to: Hypervisor Virtual Bridges (Internal-LAN, External-LAN), Server
-- Upstream Connection Type: Virtual
-- Downstream Connection Type: Virtual
-- Power Source: Server
+- Power Source: Server PSUs
+- Dependencies: Server
+- Dependencies Connection Type: Virtual
+- Dependents: Hypervisor Virtual Bridges (Internal-LAN, External-LAN), Hypervisor Bond Interface, Hypervisor VLAN Interfaces (Infrastructure, Storage, Backups, DMZ), Hypervisor NFS Datastores (Performance, Bulk, Backups)
+- Dependents Connection Type: Virtual
 
-The hypervisor relies on the server to boot it, and serves its own virtual bridges as well as back to the server itself. Concept of direction here gets a little finicky, caught between Internal-LAN and External-LAN.
+## Internal LAN Nodes
 
 ### Hypervisor Internal-LAN Virtual Bridge
 
@@ -179,6 +366,9 @@ Server + Hypervisor Virtual Bridges -> Router/Firewall VM -> Router/Firewall VM 
 ### Router/Firewall VM LAN Interface
 
 Router/Firewall VM VLAN Interfaces (Management, Infrastructure, Storage, Backups, Labs, DMZ) -> Router/Firewall VM LAN Interface -> Hypervisor Internal-LAN Virtual Bridge
+
+- Node Type: Virtual
+- Dependent on: 
 
 
 
