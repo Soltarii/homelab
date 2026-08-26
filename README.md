@@ -105,52 +105,51 @@ Boot storage (Local) for Proxmox is independent of the TrueNAS storage infrastru
 
 ## Repository Structure
 
-homelab/
-|
-|- ansible/
-|
-|- documentation/
-|  |- architecture/
-|  |  |- boot-order.md
-|  |  |- firewall-zones.md
-|  |  |- network.md
-|  |  |- network-topology.svg
-|  |  |- network-topology.xml
-|  |  |- nodes.md
-|  |  |- recovery.md
-|  |  |- topology.md
-|  |
-|  |- inventory/
-|  |  |- addressing.md
-|  |  |- connection-topology.svg
-|  |  |- connection-Topology.xml
-|  |  |- firewall-acl.md
-|  |  |- hardware.md
-|  |  |- virtual-machines.md
-|  |
-|  |- operations/
-|  |  |- boot-order.md
-|  |  |- recovery.md
-|  |
-|  |- projects/
-|
-|- network/
-|
-|- opnsense/
-|
-|- pbs/
-|
-|- proxmox/
-|
-|- scripts/
-|
-|- terraform/
-|
-|- truenas/
-|
-|- .gitignore
-|- LICENSE
-|- README.md
+homelab/  
+|  
+|- ansible/  
+|  
+|- documentation/  
+|  |- architecture/  
+|  |  |- boot-order.md  
+|  |  |- firewall-zones.md  
+|  |  |- network.md  
+|  |  |- network-topology.svg  
+|  |  |- network-topology.xml  
+|  |  |- nodes.md  
+|  |  |- topology.md  
+|  |  
+|  |- inventory/  
+|  |  |- addressing.md  
+|  |  |- connection-topology.svg  
+|  |  |- connection-Topology.xml  
+|  |  |- firewall-acl.md  
+|  |  |- hardware.md  
+|  |  |- virtual-machines.md  
+|  |  
+|  |- operations/  
+|  |  |- boot-order.md  
+|  |  |- recovery.md  
+|  |  
+|  |- projects/  
+|  
+|- network/  
+|  
+|- opnsense/  
+|  
+|- pbs/  
+|  
+|- proxmox/  
+|  
+|- scripts/  
+|  
+|- terraform/  
+|  
+|- truenas/  
+|  
+|- .gitignore  
+|- LICENSE  
+|- README.md  
 
 ## Repository Structure Overview
 

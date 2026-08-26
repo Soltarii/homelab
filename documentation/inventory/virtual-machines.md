@@ -21,45 +21,45 @@ The following documentation is intended to be an authoritative source of all vir
 
 ### OPNsense
 
-Purpose:
-Security Zone: Management
+Purpose: Internal-LAN Router/Firewall  
+Security Zone: Management  
 
 #### General Configuration
 
-Node: r640
-VMID: 100
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: Yes
-Start/Shutdown Order: 1
-Startup Delay: 30
-Shutdown Timeout: None
-Boot Order: virtio0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 100  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: Yes  
+Start/Shutdown Order: 1  
+Startup Delay: 30  
+Shutdown Timeout: None  
+Boot Order: virtio0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: No
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=1340c7e0-9431-4660-9bb7-94df2f51a113
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: No  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=1340c7e0-9431-4660-9bb7-94df2f51a113  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: vm-bulk-nfs
-ISO Image: OPNsense-26.1.2-dvd-amd64.iso
+Type: ISO  
+Storage: vm-bulk-nfs  
+ISO Image: OPNsense-26.1.2-dvd-amd64.iso  
 
-Guest OS: Other
-Version: n/a
+Guest OS: Other  
+Version: n/a  
 
 EFI Disk: vm-100-disk-0.qcow2
 - Storage: Local
@@ -68,12 +68,12 @@ EFI Disk: vm-100-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: No
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: No  
+TPM?: No  
 
 #### Disk Configuration
 
@@ -94,27 +94,27 @@ Disk: virtio0
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 6
-Type: Host
-Total Cores: 6
+Sockets: 1  
+Cores: 6  
+Type: Host  
+Total Cores: 6  
 
-VCPUs: 6
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 6  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
 Extra CPU Flags:
 - AES: On
 
 #### Memory Configuration
 
-Memory: 8192MiB (8GiB)
+Memory: 8192MiB (8GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
@@ -164,164 +164,164 @@ Network Device: net3 (To be deprecated)
 
 ### Automation
 
-Purpose:
-Security Zone: Infrastructure
+Purpose: Version Control, Documentuation, Configuration Management, Provisioning, Deployment  
+Security Zone: Infrastructure  
 
 #### General Configuration
 
-Node: r640
-VMID: 110
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: Yes
-Start/Shutdown Order: 5
-Startup Delay: 30
-Shutdown Timeout: None
-Boot Order: scsi0, net0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 110  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: Yes  
+Start/Shutdown Order: 5  
+Startup Delay: 30  
+Shutdown Timeout: None  
+Boot Order: scsi0, net0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=a47db050-6c39-4e56-a20d-96cddec5edfe
-Protection?: Yes
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=a47db050-6c39-4e56-a20d-96cddec5edfe  
+Protection?: Yes  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: vm-bulk-nfs
-ISO Image: ubuntu-26.04-live-server-amd64.iso
+Type: ISO  
+Storage: vm-bulk-nfs  
+ISO Image: ubuntu-26.04-live-server-amd64.iso  
 
-Guest OS: Linux
-Version: 7.x - 2.6 Kernel
+Guest OS: Linux  
+Version: 7.x - 2.6 Kernel  
 
-EFI Disk: vm-110-disk-1.qcow2
-- Storage: Local
-- EFI Type: 4m
-- Size: 528K
+EFI Disk: vm-110-disk-1.qcow2  
+- Storage: Local  
+- EFI Type: 4m  
+- Size: 528K  
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: Yes
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: Yes  
+TPM?: No  
 
 #### Disk Configuration
 
-Disk: scsi0
-- Image: vm-110-disk-0.qcow2
-- SCSI Controller: VirtIO SCSI Single
-- Storage: vm-fast-nfs
-- Disk Size: 40GiB
-- Format: QEMU (qcow2)
-- Cache: Default (none)
-- Discard?: Yes
-- IO Thread?: Yes
-- SSD Emulation?: Yes
-- Backup Target?: Yes
-- Read-Only?: No
-- Skip Replication?: No
-- Async IO: Default (io_uring)
+Disk: scsi0  
+- Image: vm-110-disk-0.qcow2  
+- SCSI Controller: VirtIO SCSI Single  
+- Storage: vm-fast-nfs  
+- Disk Size: 40GiB  
+- Format: QEMU (qcow2)  
+- Cache: Default (none)  
+- Discard?: Yes  
+- IO Thread?: Yes  
+- SSD Emulation?: Yes  
+- Backup Target?: Yes  
+- Read-Only?: No  
+- Skip Replication?: No  
+- Async IO: Default (io_uring)  
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 2
-Type: Host
-Total Cores: 2
+Sockets: 1  
+Cores: 2  
+Type: Host  
+Total Cores: 2  
 
-VCPUs: 2
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 2  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 4096MiB (4GiB)
+Memory: 4096MiB (4GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
-Network Device: net0
-- Bridge: vmbr1
-- VLAN Tag: None
-- Firewall?: Yes
-- Model: VirtIO (paravirtualized)
-- MAC Address: BC:24:11:7B:54:2F
-- Disconnect?: No
-- MTU: Same as Bridge
-- Rate Limit (MB/s): Unlimited
-- Multiqueue: 2
+Network Device: net0  
+- Bridge: vmbr1  
+- VLAN Tag: None  
+- Firewall?: Yes  
+- Model: VirtIO (paravirtualized)  
+- MAC Address: BC:24:11:7B:54:2F  
+- Disconnect?: No  
+- MTU: Same as Bridge  
+- Rate Limit (MB/s): Unlimited  
+- Multiqueue: 2  
 
 ### Monitoring
 
-Purpose:
-Security Zone: Infrastructure
+Purpose:  
+Security Zone: Infrastructure  
 
 ### Security
 
-Purpose:
-Security Zone: Infrastructure
+Purpose:  
+Security Zone: Infrastructure  
 
 ### TrueNAS
 
-Purpose:
-Security Zone: Storage
+Purpose:  
+Security Zone: Storage  
 
 #### General Configuration
 
-Node: r640
-VMID: 120
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: Yes
-Start/Shutdown Order: 2
-Startup Delay: 120
-Shutdown Timeout: None
-Boot Order: scsi0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 120  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: Yes  
+Start/Shutdown Order: 2  
+Startup Delay: 120  
+Shutdown Timeout: None  
+Boot Order: scsi0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=3128bb05-b8cf-47fd-bc44-df6f6e119e2e
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=3128bb05-b8cf-47fd-bc44-df6f6e119e2e  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: Removed
-ISO Image: Removed
+Type: ISO  
+Storage: Removed  
+ISO Image: Removed  
 
-Guest OS: Linux
-Version: 7.x - 2.6 Kernel
+Guest OS: Linux  
+Version: 7.x - 2.6 Kernel  
 
 EFI Disk: vm-120-disk-0.qcow2
 - Storage: Local
@@ -330,12 +330,12 @@ EFI Disk: vm-120-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI
-QEMU Agent?: No
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI  
+QEMU Agent?: No  
+TPM?: No  
 
 PCI Device: hostpci0
 - Device: 0000:1a:00.0
@@ -368,26 +368,26 @@ Disk: scsi0
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 16
-Type: Host
-Total Cores: 16
+Sockets: 1  
+Cores: 16  
+Type: Host  
+Total Cores: 16  
 
-VCPUs: 16
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 16  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 32768MiB (32GiB)
+Memory: 32768MiB (32GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
@@ -415,45 +415,45 @@ Network Device: net1
 
 ### PBS-Primary
 
-Purpose:
-Security Zone: Backups
+Purpose:  
+Security Zone: Backups  
 
 #### General Configuration
 
-Node: r640
-VMID: 130
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: Yes
-Start/Shutdown Order: 3
-Startup Delay: None
-Shutdown Timeout: None
-Boot Order: scsi0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 130  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: Yes  
+Start/Shutdown Order: 3  
+Startup Delay: None  
+Shutdown Timeout: None  
+Boot Order: scsi0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=db42b037-a9dc-41c4-812a-4bfc1077f908
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=db42b037-a9dc-41c4-812a-4bfc1077f908  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: Removed
-ISO Image: Removed
+Type: ISO  
+Storage: Removed  
+ISO Image: Removed  
 
-Guest OS: Linux
-Version: 7.x - 2.6 Kernel
+Guest OS: Linux  
+Version: 7.x - 2.6 Kernel  
 
 EFI Disk: vm-130-disk-0.qcow2
 - Storage: vm-bulk-nfs
@@ -462,12 +462,12 @@ EFI Disk: vm-130-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: Yes
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: Yes  
+TPM?: No  
 
 #### Disk Configuration
 
@@ -503,26 +503,26 @@ Disk: scsi1
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 4
-Type: Host
-Total Cores: 4
+Sockets: 1  
+Cores: 4  
+Type: Host  
+Total Cores: 4  
 
-VCPUs: 4
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 4  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 8192MiB (8GiB)
+Memory: 8192MiB (8GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
@@ -539,45 +539,45 @@ Network Device: net0
 
 ### PBS-Secondary
 
-Purpose:
-Security Zone: Backups
+Purpose:  
+Security Zone: Backups  
 
 #### General Configuration
 
-Node: r640
-VMID: 131
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: Yes
-Start/Shutdown Order: 4
-Startup Delay: 90
-Shutdown Timeout: None
-Boot Order: scsi0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 131  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: Yes  
+Start/Shutdown Order: 4  
+Startup Delay: 90  
+Shutdown Timeout: None  
+Boot Order: scsi0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=0823c372-d1fd-4e5b-a86e-8220c29a914c
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=0823c372-d1fd-4e5b-a86e-8220c29a914c  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: Removed
-ISO Image: Removed
+Type: ISO  
+Storage: Removed  
+ISO Image: Removed  
 
-Guest OS: Linux
-Version: 7.x - 2.6 Kernel
+Guest OS: Linux  
+Version: 7.x - 2.6 Kernel  
 
 EFI Disk: vm-131-disk-0.qcow2
 - Storage: external-T7
@@ -586,12 +586,12 @@ EFI Disk: vm-131-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: Yes
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: Yes  
+TPM?: No  
 
 #### Disk Configuration
 
@@ -627,26 +627,26 @@ Disk: scsi1
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 4
-Type: Host
-Total Cores: 4
+Sockets: 1  
+Cores: 4  
+Type: Host  
+Total Cores: 4  
 
-VCPUs: 4
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 4  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 8192MiB (8GiB)
+Memory: 8192MiB (8GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
@@ -663,45 +663,45 @@ Network Device: net0
 
 ### Windows-Server-2025
 
-Purpose:
-Security Zone: Labs
+Purpose:  
+Security Zone: Labs  
 
 #### General Configuration
 
-Node: r640
-VMID: 200
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: No
-Start/Shutdown Order: Any
-Startup Delay: None
-Shutdown Timeout: None
-Boot Order: scsi0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 200  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: No  
+Start/Shutdown Order: Any  
+Startup Delay: None  
+Shutdown Timeout: None  
+Boot Order: scsi0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=12648ca7-483b-49da-a0cb-33dd5ae2ce00
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=12648ca7-483b-49da-a0cb-33dd5ae2ce00  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: vm-bulk-nfs
-ISO Image: 26100.32230.260111-0550.lt\_release_svc\_refresh_SERVER\_EVAL_x64FRE_en-us.iso
+Type: ISO  
+Storage: vm-bulk-nfs  
+ISO Image: 26100.32230.260111-0550.lt\_release_svc\_refresh_SERVER\_EVAL_x64FRE_en-us.iso  
 
-Guest OS: Microsoft Windows
-Version: 11/2022/2025
+Guest OS: Microsoft Windows  
+Version: 11/2022/2025  
 
 EFI Disk: vm-200-disk-0.qcow2
 - Storage: vm-fast-nfs
@@ -712,11 +712,11 @@ EFI Disk: vm-200-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: VirtIO-GPU (virtio)
-Machine: pc-q35-10.1
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: Yes
+Graphics Card: VirtIO-GPU (virtio)  
+Machine: pc-q35-10.1  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: Yes  
 TPM?: Yes
 - TPM State: vm-200-disk-0.qcow2
 - Storage: vm-bulk-nfs
@@ -745,26 +745,26 @@ Disk: scsi0
 
 #### CPU Configuration
 
-Sockets: 2
-Cores: 4
-Type: Host
-Total Cores: 8
+Sockets: 2  
+Cores: 4  
+Type: Host  
+Total Cores: 8  
 
-VCPUs: 8
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 8  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 8192MiB (8GiB)
+Memory: 8192MiB (8GiB)  
 
-Minimum Memory?: 8192MiB (8GiB)
-Ballooning?: Yes
-Allow KSM?: Yes
+Minimum Memory?: 8192MiB (8GiB)  
+Ballooning?: Yes  
+Allow KSM?: Yes  
 
 #### Network Configuration
 
@@ -781,45 +781,45 @@ Network Device: net0 (To be converted)
 
 ### Wiki.js
 
-Purpose:
-Security Zone: DMZ
+Purpose:  
+Security Zone: DMZ  
 
 #### General Configuration
 
-Node: r640
-VMID: 300
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: No
-Start/Shutdown Order: Any
-Startup Delay: None
-Shutdown Timeout: None
-Boot Order: scsi0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 300  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: No  
+Start/Shutdown Order: Any  
+Startup Delay: None  
+Shutdown Timeout: None  
+Boot Order: scsi0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=2e49a840-7b7f-4bbb-8b57-47833b1d67e7
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=2e49a840-7b7f-4bbb-8b57-47833b1d67e7  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: vm-bulk-nfs
-ISO Image: ubuntu-26.04-live-server-amd64.iso
+Type: ISO  
+Storage: vm-bulk-nfs  
+ISO Image: ubuntu-26.04-live-server-amd64.iso  
 
-Guest OS: Linux
-Version: 7.x - 2.6 Kernel
+Guest OS: Linux  
+Version: 7.x - 2.6 Kernel  
 
 EFI Disk: vm-300-disk-0.qcow2
 - Storage: vm-bulk-nfs
@@ -828,12 +828,12 @@ EFI Disk: vm-300-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: Yes
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: Yes  
+TPM?: No  
 
 #### Disk Configuration
 
@@ -854,26 +854,26 @@ Disk: scsi0
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 2
-Type: Host
-Total Cores: 2
+Sockets: 1  
+Cores: 2  
+Type: Host  
+Total Cores: 2  
 
-VCPUs: 2
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 2  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 4096MiB (4GiB)
+Memory: 4096MiB (4GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
@@ -890,45 +890,45 @@ Network Device: net0
 
 ### Minecraft
 
-Purpose:
-Security Zone: DMZ
+Purpose:  
+Security Zone: DMZ  
 
 #### General Configuration
 
-Node: r640
-VMID: 301
-Resource Pool: None
-High-Availability?: No
-Start at Boot?: No
-Start/Shutdown Order: Any
-Startup Delay: No
-Shutdown Timeout: None
-Boot Order: scsi0
-vCPU Architecture: Host
-Tags:
+Node: r640  
+VMID: 301  
+Resource Pool: None  
+High-Availability?: No  
+Start at Boot?: No  
+Start/Shutdown Order: Any  
+Startup Delay: No  
+Shutdown Timeout: None  
+Boot Order: scsi0  
+vCPU Architecture: Host  
+Tags:  
 
-Tablet for Pointer?: Yes
-Hotplugs: Disk, Network, USB
-ACPI Support?: Yes
-KVM Hardware Virtualization?: Yes
-Freeze CPU at Startup?: No
-Use Local Time for RTC: Default (Enabled for Windows)
-RTC Start Date: Now
-SMBIOS Settings (Type 1): UUID=9cc89830-70b3-4a7c-b4c3-d22f39f0ad6a
-Protection?: No
-Spice Enhancements: None
-VM State Storage: Automatic
-AMD SEV: Default (Disabled)
-Intel TDX: Default (Disabled)
+Tablet for Pointer?: Yes  
+Hotplugs: Disk, Network, USB  
+ACPI Support?: Yes  
+KVM Hardware Virtualization?: Yes  
+Freeze CPU at Startup?: No  
+Use Local Time for RTC: Default (Enabled for Windows)  
+RTC Start Date: Now  
+SMBIOS Settings (Type 1): UUID=9cc89830-70b3-4a7c-b4c3-d22f39f0ad6a  
+Protection?: No  
+Spice Enhancements: None  
+VM State Storage: Automatic  
+AMD SEV: Default (Disabled)  
+Intel TDX: Default (Disabled)  
 
 #### OS Configuration
 
-Type: ISO
-Storage: vm-bulk-nfs
-ISO Image: ubuntu-26.04-live-server-amd64.iso
+Type: ISO  
+Storage: vm-bulk-nfs  
+ISO Image: ubuntu-26.04-live-server-amd64.iso  
 
-Guest OS: Linux
-Version: 7.x - 2.6 Kernel
+Guest OS: Linux  
+Version: 7.x - 2.6 Kernel  
 
 EFI Disk: vm-301-disk-0.qcow2
 - Storage: vm-fast-nfs
@@ -937,12 +937,12 @@ EFI Disk: vm-301-disk-0.qcow2
 
 #### System Configuration
 
-Graphics Card: SPICE (qxl)
-Machine: q35
-BIOS: OVMF (UEFI)
-SCSI Controller: VirtIO SCSI Single
-QEMU Agent?: Yes
-TPM?: No
+Graphics Card: SPICE (qxl)  
+Machine: q35  
+BIOS: OVMF (UEFI)  
+SCSI Controller: VirtIO SCSI Single  
+QEMU Agent?: Yes  
+TPM?: No  
 
 #### Disk Configuration
 
@@ -963,26 +963,26 @@ Disk: scsi0
 
 #### CPU Configuration
 
-Sockets: 1
-Cores: 8
-Type: Host
-Total Cores: 8
+Sockets: 1  
+Cores: 8  
+Type: Host  
+Total Cores: 8  
 
-VCPUs: 8
-CPU Limit: Unlimited
-CPU Affinity: All Cores
-CPU Units: 100
-Enable NUMA?: No
+VCPUs: 8  
+CPU Limit: Unlimited  
+CPU Affinity: All Cores  
+CPU Units: 100  
+Enable NUMA?: No  
 
-Extra CPU Flags: No
+Extra CPU Flags: No  
 
 #### Memory Configuration
 
-Memory: 16384MiB (16GiB)
+Memory: 16384MiB (16GiB)  
 
-Minimum Memory?: n/a
-Ballooning?: No
-Allow KSM?: No
+Minimum Memory?: n/a  
+Ballooning?: No  
+Allow KSM?: No  
 
 #### Network Configuration
 
