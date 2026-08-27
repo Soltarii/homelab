@@ -4,12 +4,64 @@ This following documentation is intended to detail the disaster recovery process
 
 TO-DO:
 - Decide whether to finish Phase descriptions or scrap them entirely
-- Finish General VM Recovery section
+- Reformat everything for better parsing?
 
 ## General VM
 
 In the event of operational failure within or to a general VM, proceed as follows:
 
+**Phase 1 - Verify Proxmox and Storage Availability**
+
+1.1) First check the Proxmox host itself is operational via "pveversion" within the Proxmox shell.
+1.2) Verify the configured storage within Proxmox via "pvesm status", confirming the datastore containing the VM's disks is active, mounted/accessible, and reporting the expected capacity.
+1.3) In the likelihood the VM uses an NFS datastore and any of the expected results of the previous step reveal an issue, proceed to the TrueNAS Recovery section within this document.
+
+**Phase 2 - Determining VM Existence**
+
+2.1) Check Proxmox's VM inventory via "qm list", "qm status (VMID)", and "qm config (VMID)". If results show the VM configuration still exists, proceed to Step 2.2, otherwise proceed to Step 2.4.
+2.2) If the VM configuration still exists, check: CPU, memory, network interfaces, VLAN tags, image disks, EFI disks, disk storage locations, boot order, PCI passthrough devices, TPM devices, startup order, and dependencies. "pvesm list (storage)" can be used to verify the referenced storage volumes exist. If VM configuration exists with incorrect information or configuraton, but the disks are fine, proceed to Phase 5. If VM disks exist but with incorrect information or configuration, proceed with Phase 3. If the VM disks are missing, proceed to Phase 4.
+2.3) If everything still exists with the correct information, attempt to start the VM and perform normal guest/service validation: If successful, proceed to Phase 9; if unsuccessful, proceed to Phase 7.
+2.4) If the VM configuration is missing, such as if Proxmox reports "VM (VMID) not found", determine whether the VM's disks still exist by searching the relevant datastores. A useful command to do this via Proxmox CLI is "find /mnt -iname '\*vm-(VMID)*' 2>/dev/null". If results show the VM disks still exist proceed to Phase 5, otherwise proceed to Phase 8.
+
+**Phase 3 - VM Configuration Exists, but Disks have Problems**
+
+3.1) If the VM disk(s) are on the wrong storage device but otherwise fine, proceed to Step 3.2. If the VM disk(s) have a VMID/name that doesn't match, proceed to Step 3.5.
+3.2) VM disk(s) existing on the wrong storage device can either have two options: Disks can be migrated to the correct storage device via Step 3.3, or update the VM configuration via Step 3.4.
+3.3) Determine the intended VMID, misplaced VM disk(s) name, current storage location, and intended storage location. Move the VM disk(s) via "qm move\_disk (VMID) (disk name) (storage)". Exact syntax for this command may change, but can be referenced via "qm help move_disk".
+3.4) Determine the current storage location and name of the misplaced VM disk(s), then modify the VM configuration to point to there. This can either be done via GUI in VM > Hardware, or from Proxmox shell via "nano /etc/pve/qemu-server/(VMID).conf".
+3.5) Determine what is actually inside the image via "qemu-img info (image path)", inspecting format, virtual size, actual disk consumption, backing file, and snapshot information. If the guest is Linux, the image can alternatively be inspected using libguestfs tools if installed, or the disk can be temporarily attached to a recovery VM.
+3.6) If the disk is correctly intended for the assigned VM and the issue is a misconfigured file name, the safest option is just to leave it as is and note the mismatch within proper documentation. If resolute on matching the file name to the VM, the best option is to next create a backup of the VM.
+3.7) Recover the VM backup as a new VM under a placeholder VMID. Launch the VM backup and verify clean operation and copying of the data from the original VM.
+3.8) Delete the original VM from the Proxmox GUI or from the shell via "qm destroy (VMID)". Verify no files or configuration remain afterwards via "qm list" and "qm status (VMID)".
+3.9) Recover the VM backup again as a new VM under the VMID of the original VM. Creation of a new VM using a backup should overwrite the filename to the VMID of the new VM. Verify this from the VM > Hardware or Proxmox shell via "qm config (VMID)" like before. If not overwritten, delete the VM again and proceed to Step 3.11.
+3.10) Once the intended VMID and disk name match, verify the VM integrity by launching it and checking around the internal files and settings. If successful, delete the remaining VM backup under the placeholder VMID using the same methods from Step 3.8 and create a new backup of the newly fixed VM.
+3.11) If the recreated VMID and disk name still don't match, delete the VM again and verify no artifacts as done in Step 3.8. Create a backup of the backup VM loaded into the placeholder VMID slot and proceed through Step 3.9 again, using the secondary-backup instead. Desyncing the backup VMID from the VMID of the newly recovered VM should fix the issue.
+
+**Phase 4 - VM Configuration Exists, but Disks are Missing**
+
+4.1) If the VM disks are truly gone and isn't a TrueNAS/NFS issue, two options exist: Locate or restore/import the disks for elsewhere via Step 3.2, or recreate the VM and its applications from scratch via Step 3.3. NOTE: Proceeding with Step 3.3 will only recreate the virtual hardware / file structure, the specific data previously contained is unrecoverable at this point.
+4.2) Restore/import the missing disk(s) to the previously utilized datastore using the same name(s) as the missing disk, matching the VM configuration details. Make sure the datastore is properly mounted. After the missing disk(s) are properly imported, proceed to Phase X.
+4.3) Recreating the missing disk(s) will require reattaching the VM .iso within the VM > Hardware section (likely as a CD/DVD Drive) like the first time the VM was created. Obtain a new .iso if necessary, or locate the original (likely within the NFS Bulk datastore). Match the bus device ID using the old configuration and/or virtual-machines.md (in homelab/documentation/inventory/) as reference.
+4.4) After the .iso is attached, launch the VM and let the missing disk(s) rebuild, using the exact same destination, size, and name as the previous (missing) disks.
+4.5) After the missing disk(s) are successfully rebuilt: Shutdown the VM, remove the CD/DVD drive from the VM > Hardware section, and proceed with Phase 9.
+
+**Phase 5 - VM Configuration has Problems, but Disks Exist**
+
+5.1) If the VM configuration has incorrect or partial information, but the disks are completely fine, simply fix the VM configuration using virtual-machines.md as reference (in homelab/documentation/inventory/). The configuration can be modified either via Proxmox GUI in VM > Hardware and/or VM > Options, or by shell via "nano /etc/pve/qemu-server/(VMID).conf".
+
+**Phase 6 - VM Configuration is Missing, but Disks Exist**
+
+6.1) If the VM configuration is truly gone but the disks remain, two options exist: Recreate the VM with the original VMID via Step 4.2, or manually reconstruct the .conf file via Step 4.5.
+6.2) Create a new VM via "qm create (VMID) --name (VM name)" from Proxmox shell.
+6.3) Recreate the hardware configuration by referencing virtual-machines.md (in homelab/documentation/inventory/) or any other surviving (known-good) records of the old configuration.
+6.4) Attach the old existing VM disks to the new VM in Proxmox via "qm set (VMID) --(disk type/ID, ex. scsi0) (datastore name):(VM disk name)", one at a time. The exact controller/bus should match the original configuration. If successful, proceed to Phase X.
+6.5) Manually reconstructing the .conf file is the riskier option, as "qm create" / "qm set" has Proxmox perform validation. Regardless, create the file using Proxmox shell via "touch /etc/pve/qemu-server/(VMID).conf" and "nano /etc/pve/qemu-server/(VMID).conf". The correct formatting, bus types/IDs, locations, and allocations must be used here. See Step 4.3 as reference. Once successful, proceed to Phase X.
+
+**Phase 7 - VM Boot Problems**
+
+**Phase 8 - Total Backup Recovery**
+
+8.1)
 
 
 ## Proxmox Recovery
