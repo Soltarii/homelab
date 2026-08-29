@@ -59,9 +59,27 @@ In the event of operational failure within or to a general VM, proceed as follow
 
 **Phase 7 - VM Boot Problems**
 
+7.1) Failure to boot a VM should result in a status message detailing the issue in the Proxmox Tasks log at the bottom of the screen, in the VM's Task History tab, or from Proxmox shell via "journalctl -b -u pvedaemon -u pvestatd -u pveproxy --no-pager".
+7.2) Verify the VM dependencies, using topology.md, nodes.md, and boot-order.md from homelab/documentation.
+7.3) Double-check "qm config (VMID)" paying particular attention to: bios, efidisk0, boot, scsi0, and virtio0. UEFI VMs (everything I have/plan to run) require an EFI disk. If the EFI disk is malformed, see Phase 3, or if it's missing entirely, see Phase 4.
+7.4) Verify the integrity of the EFI disk using "qemu-img info (disk path)". If corrupted a new EFI disk will need to be created, see Phase 3/4.
+7.5) If the EFI disk is intact, boot into the VM's guest recovery environment and repair the guest OS bootloader/filesystem from the options. For example, filesystem repair -> mount root filesystem -> repair/reinstall GRUB -> verify EFI boot entry -> reboot.
+
 **Phase 8 - Total Backup Recovery**
 
-8.1)
+8.1) If all else fails, begin checking if a known-good backup exists using "pvesm status" and/or the VM's Backups tab. Identify VMID, backup timestamp, backup type, and backup storage. The most recent backup is not always the safest, as it may have been captured after the problem occurred.
+8.2) Restore the VM by selecting the best backup option from either the VM -> Backups GUI or from Proxmox shell via "qmrestore (backup filepath) (new VMID)". It is highly recommended to restore to a new VMID to check the integrity of the backup, reserving the original VM until the backup is booted and verified to work.
+8.3) Boot the backup copy, checking all services are functioning properly and the filesystem is intact. If the backup copy proves to be unsatisfactory, choose a later backup from the previous step.
+8.4) Once the backup copy is verified, restore over the original VMID and delete the backup copy restored to the temporary VMID via "qm destroy (VMID)".
+8.5) After restoration, check "qm config (VMID)" and "qm status (VMID)", comparing the resulting configuration against the documented configuration at: homelab/documentation/inventory/virtual-machines.md.
+
+**Phase 9 - Network Connection**
+
+9.1) Check the VM's network configuration in Proxmox via "qm config (VMID)" paying particular attention to: bridge=, tag=, firewall=. All VMs should (at minimum) attached to vmbr1 in Proxmox. The tag per interface of the VM should be correctly assigned and trunked to the OPNsense VLAN, but in case nothing else points to the issue, attempt to wipe a specific tag being assigned to the VM interfaces and try connecting. Generally, the per-VM firewall being enabled should be fine, but attempt toggling the option off in case nothing else points to the issue (the firewall configuration of OPNsense is already fine to use without per-VM firewall).
+9.2) Boot the VM and check the network settings: Is an IP assigned statically or dynamically? Does the assigned virtual NIC match the proper configuration for the VM? For reference, Linux: "resolvectl status", "ip addr", "ip route", "systemctl --failed", "systemctl status (specific service)"; for Docker VMs: "docker ps", "docker compose ps", "docker logs (container)".
+9.3) Attempt outbound connectivity if VM network settings are correct, can the VM ping the Proxmox Internal-LAN virtual bridge, the OPNsense VLAN interface, the Internet? Partial failure of these pings can use traceroute to narrow the break in communications.
+9.4) Attempt inbound connection from known-good nodes and problem nodes similar to the previous step, comparing the results. Assymmetric connection failure may indicate mismatched routing.
+9.5) Check the interface logs in OPNsense, does anything indicate a misconfigured firewall rule, or only partial session connection to/from the VM to/from the intended communication target?
 
 
 ## Proxmox Recovery
@@ -90,7 +108,7 @@ Attempt to regain access if no video output or local console are available.
 2.1) Proceed to attempt to access the R640 local console / UEFI via the iDRAC port on the rear face of the R640 using a known-good Ethernet cable with RJ-45 connector, connecting to a trusted admin workstation.
 2.2) Access the iDRAC console via navigating to the iDRAC IP in a web browser (https://), or SSH in a terminal (ssh root@).
 2.3) In iDRAC, verify system health, confirming no critical hardware alerts, fans healthy, PSU healthy, CPU healthy, and memory healthy.
-2.4) In iDRAC, verify storage, confirming the BOSS RAID is present, drives are detected, and there are no egraded virtual disks.
+2.4) In iDRAC, verify storage, confirming the BOSS RAID is present, drives are detected, and there are no egraded virtual disks.c
 2.5) In iDRAC, review logs (Lifecycle Log & System Event Log), looking for memory errors, RAID errors, PSU failures, thermal shutdowns, or otherwise anything that sticks out.
 2.6) In iDRAC, launch the virtual / HTML5 console, verifying that POST completes, BIOS completes, GRUB appears, and Proxmox boots.
 2.7) If the host is hung, perform a power cycle via Graceful Shutdown (preferred) or Forced Reboot (if necessary).
